@@ -1,7 +1,7 @@
 # Codex Global Engineering Defaults
 
 <!-- AGENT-ENGINEERING-TOOLKIT:BEGIN -->
-Toolkit-Version: 1.4.0
+Toolkit-Version: 1.5.0
 
 Machine Execution Profile:
 `%USERPROFILE%\.agent-engineering\MACHINE_EXECUTION_PROFILE.md`

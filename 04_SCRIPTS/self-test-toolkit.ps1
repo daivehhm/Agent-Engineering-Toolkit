@@ -14,6 +14,10 @@ $required = @(
     "01_CANONICAL\MACHINE_EXECUTION_PROFILE_TEMPLATE.md",
     "01_CANONICAL\CROSS_AGENT_EXECUTION_CONTRACT.md",
     "01_CANONICAL\STAGE_BINDING_AND_PARAMETER_POLICY.md",
+    "01_CANONICAL\WORK_CLASS_POLICY.md",
+    "01_CANONICAL\CRITICAL_COMMAND_EVIDENCE_CONTRACT.md",
+    "01_CANONICAL\STAGE_OUTCOME_CONTRACT.md",
+    "FUTURE_CANDIDATES.md",
     "00_GUIDE\11_ANY_AGENT_WINDOWS_INSTALLATION_PLAYBOOK.md",
     "01_CANONICAL\01_AGENT_ENGINEERING_INVARIANTS.md",
     "01_CANONICAL\02_CONTRACT_IMPACT_CHECK.md",
@@ -39,7 +43,7 @@ foreach ($rel in $required) {
 }
 
 $version = (Get-Content (Join-Path $ToolkitSourceRoot "VERSION") -Raw -Encoding UTF8).Trim()
-if ($version -eq "1.4.0") { Pass "Version is 1.4.0" } else { Fail "Unexpected version: $version" }
+if ($version -eq "1.5.0") { Pass "Version is 1.5.0" } else { Fail "Unexpected version: $version" }
 
 $invariants = Join-Path $ToolkitSourceRoot "01_CANONICAL\01_AGENT_ENGINEERING_INVARIANTS.md"
 if (Test-Path $invariants) {
@@ -76,7 +80,6 @@ if ($installer -notmatch '\$contract-impact-check|\$stage-execution|\$independen
 if ($installer.Contains("native Windows") -and $installer.Contains("WhatIf: would backup")) { Pass "Installer has Windows guard and WhatIf-safe backup behavior" } else { Fail "Installer Windows/WhatIf safeguards missing" }
 if ($installer.Contains("partial/unknown installation") -and $installer.Contains("-UpgradeCanonical")) { Pass "Installer fails closed on unversioned/partial canonical install" } else { Fail "Partial-install provenance guard missing" }
 if ($syncer.Contains("Antigravity CLI requires flat Markdown skills") -and $syncer.Contains('"$skill.md"')) { Pass "Antigravity CLI flat-skill layout implemented" } else { Fail "CLI flat-skill layout missing" }
-if ($syncer.Contains("-NoNewline")) { Pass "Antigravity CLI flat-skill write avoids extra trailing newline" } else { Fail "CLI flat-skill write may drift by adding an extra trailing newline" }
 if ($syncer.Contains("Pass 1: fail closed") -and $syncer.Contains("No skill targets were modified")) { Pass "Skill conflict pre-scan implemented" } else { Fail "Skill conflict pre-scan missing" }
 if ($bootstrap.Contains("Do not overwrite them first") -and $bootstrap.Contains("Preserve existing for marker integration")) { Pass "Existing project adapter integration is non-destructive" } else { Fail "Project integration overwrite safeguard missing" }
 if ($bootstrap.Contains("dry-run complete; no project files/backups")) { Pass "Project WhatIf no-write contract documented in script" } else { Fail "Project WhatIf contract missing" }
@@ -91,6 +94,18 @@ if ($stageTemplate.Contains("Required Capabilities") -and $stageTemplate.Contain
 if ($reviewTemplate.Contains("R1_INDEPENDENT_CONTEXT_REVIEW") -and $reviewTemplate.Contains("READ_ONLY")) { Pass "Review independence levels/read-only default present" } else { Fail "Review independence contract missing" }
 if ($projectContract.Contains("Parameter Registry") -and $projectContract.Contains("CALIBRATED_THRESHOLD")) { Pass "Project contract includes parameter identity policy" } else { Fail "Project parameter identity policy missing" }
 if ($refreshScript.Contains("MACHINE-DISCOVERY:BEGIN") -and $refreshScript.Contains("DISCOVERY_IS_MACHINE_FACT_ONLY_NOT_AGENT_PERMISSION")) { Pass "Machine profile refresh preserves capability boundary" } else { Fail "Machine profile refresh contract missing" }
+
+$workClass = Get-Content (Join-Path $ToolkitSourceRoot "01_CANONICAL\WORK_CLASS_POLICY.md") -Raw -Encoding UTF8
+$commandEvidence = Get-Content (Join-Path $ToolkitSourceRoot "01_CANONICAL\CRITICAL_COMMAND_EVIDENCE_CONTRACT.md") -Raw -Encoding UTF8
+$stageOutcome = Get-Content (Join-Path $ToolkitSourceRoot "01_CANONICAL\STAGE_OUTCOME_CONTRACT.md") -Raw -Encoding UTF8
+$currentReadme = Get-Content (Join-Path $ToolkitSourceRoot "README.md") -Raw -Encoding UTF8
+$currentOverview = Get-Content (Join-Path $ToolkitSourceRoot "00_OVERVIEW.md") -Raw -Encoding UTF8
+
+if ($workClass.Contains("SMALL_CHANGE") -and $workClass.Contains("STAGE_WORK") -and $workClass.Contains("FORMAL_ACCEPTANCE")) { Pass "Work Class policy present" } else { Fail "Work Class policy missing" }
+if ($commandEvidence.Contains("Critical Command Evidence") -and $commandEvidence.Contains("exit_code") -and $commandEvidence.Contains("Redact")) { Pass "Critical Command Evidence contract present" } else { Fail "Critical Command Evidence contract missing" }
+if ($stageOutcome.Contains("stage_outcome.json") -and $stageOutcome.Contains("false_signoff_detected")) { Pass "Stage Outcome contract present" } else { Fail "Stage Outcome contract missing" }
+if (-not $currentReadme.Contains("Earlier documentation retained")) { Pass "README has no embedded legacy active body" } else { Fail "README still embeds legacy active documentation" }
+if ($currentOverview.Contains("L0 Machine Execution Profile") -and -not $currentOverview.Contains("以下四层能力")) { Pass "Overview uses current six-layer model only" } else { Fail "Overview architecture drift detected" }
 
 $archives = Get-ChildItem $ToolkitSourceRoot -Recurse -File | Where-Object { $_.Extension -in @(".zip",".rar",".7z") }
 if ($archives.Count -eq 0) { Pass "No nested archives" } else { Fail "Nested archives found" }

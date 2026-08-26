@@ -353,3 +353,10 @@ Final Judge
 ```
 
 降低假成功概率。
+
+
+---
+
+# Work Class v1.5
+
+SMALL_CHANGE uses minimal local verification. STAGE_WORK adds formal evidence and Independent Review. FORMAL_ACCEPTANCE additionally freezes criteria and protects holdout/acceptance integrity. Work Class changes process intensity because the work is different, not because governance is arbitrarily set to lenient/strict.

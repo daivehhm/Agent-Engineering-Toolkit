@@ -1,8 +1,8 @@
 # Package Manifest
 
-Package: `Agent-Engineering-Toolkit-v1.4`
-Version: `1.4.0`
-Files excluding this manifest: `77`
+Package: `Agent-Engineering-Toolkit-v1.5`
+Version: `1.5.0`
+Files excluding this manifest: `89`
 
 No SHA/SHA256 manifest is used.
 
@@ -31,36 +31,47 @@ No SHA/SHA256 manifest is used.
 - `01_CANONICAL/02_CONTRACT_IMPACT_CHECK.md`
 - `01_CANONICAL/03_STAGE_EXECUTION_TEMPLATE.md`
 - `01_CANONICAL/04_INDEPENDENT_REVIEW_CHECKLIST.md`
+- `01_CANONICAL/CRITICAL_COMMAND_EVIDENCE_CONTRACT.md`
 - `01_CANONICAL/CROSS_AGENT_EXECUTION_CONTRACT.md`
 - `01_CANONICAL/EVIDENCE_CONTRACT.md`
 - `01_CANONICAL/MACHINE_EXECUTION_PROFILE_TEMPLATE.md`
 - `01_CANONICAL/PROJECT_ENGINEERING_CONTRACT_TEMPLATE.md`
 - `01_CANONICAL/REVIEW_ZIP_STANDARD.md`
 - `01_CANONICAL/STAGE_BINDING_AND_PARAMETER_POLICY.md`
+- `01_CANONICAL/STAGE_OUTCOME_CONTRACT.md`
 - `01_CANONICAL/TEST_INTEGRITY_CONTRACT.md`
+- `01_CANONICAL/WORK_CLASS_POLICY.md`
 - `02_SKILLS/contract-impact-check/.agent-engineering-managed`
 - `02_SKILLS/contract-impact-check/SKILL.md`
 - `02_SKILLS/contract-impact-check/references/CONTRACT_IMPACT_CHECK.md`
 - `02_SKILLS/independent-review/.agent-engineering-managed`
 - `02_SKILLS/independent-review/SKILL.md`
+- `02_SKILLS/independent-review/references/CRITICAL_COMMAND_EVIDENCE_CONTRACT.md`
 - `02_SKILLS/independent-review/references/CROSS_AGENT_EXECUTION_CONTRACT.md`
 - `02_SKILLS/independent-review/references/INDEPENDENT_REVIEW_CHECKLIST.md`
 - `02_SKILLS/independent-review/references/STAGE_BINDING_AND_PARAMETER_POLICY.md`
+- `02_SKILLS/independent-review/references/STAGE_OUTCOME_CONTRACT.md`
+- `02_SKILLS/independent-review/references/WORK_CLASS_POLICY.md`
 - `02_SKILLS/stage-execution/.agent-engineering-managed`
 - `02_SKILLS/stage-execution/SKILL.md`
+- `02_SKILLS/stage-execution/references/CRITICAL_COMMAND_EVIDENCE_CONTRACT.md`
 - `02_SKILLS/stage-execution/references/CROSS_AGENT_EXECUTION_CONTRACT.md`
 - `02_SKILLS/stage-execution/references/STAGE_BINDING_AND_PARAMETER_POLICY.md`
 - `02_SKILLS/stage-execution/references/STAGE_EXECUTION_TEMPLATE.md`
+- `02_SKILLS/stage-execution/references/STAGE_OUTCOME_CONTRACT.md`
+- `02_SKILLS/stage-execution/references/WORK_CLASS_POLICY.md`
 - `03_ADAPTERS/ANTIGRAVITY_GLOBAL_GEMINI_TEMPLATE.md`
 - `03_ADAPTERS/CLAUDE_GLOBAL_CLAUDE_TEMPLATE.md`
 - `03_ADAPTERS/CODEX_COMPATIBILITY_TEMPLATE.md`
 - `03_ADAPTERS/CODEX_GLOBAL_AGENTS_TEMPLATE.md`
+- `03_ADAPTERS/CRITICAL_COMMAND_EVIDENCE_TEMPLATE.jsonl`
 - `03_ADAPTERS/INSTALLATION_REPORT_TEMPLATE.md`
 - `03_ADAPTERS/PROJECT_TEMPLATES/.agents/rules/engineering-contract-router.md`
 - `03_ADAPTERS/PROJECT_TEMPLATES/AGENTS.md`
 - `03_ADAPTERS/PROJECT_TEMPLATES/CLAUDE.md`
 - `03_ADAPTERS/PROJECT_TEMPLATES/ENGINEERING_CONTRACT.md`
 - `03_ADAPTERS/PROJECT_TEMPLATES/GEMINI.md`
+- `03_ADAPTERS/STAGE_OUTCOME_TEMPLATE.json`
 - `04_SCRIPTS/README.md`
 - `04_SCRIPTS/bootstrap-project.ps1`
 - `04_SCRIPTS/install-agent-engineering.ps1`
@@ -82,6 +93,7 @@ No SHA/SHA256 manifest is used.
 - `06_VALIDATION/V1_4_DEEP_SOCRATIC_REVIEW.md`
 - `06_VALIDATION/ZERO_CONTEXT_AGENT_CONFIGURATION_ASSESSMENT.md`
 - `CHANGELOG.md`
+- `FUTURE_CANDIDATES.md`
 - `INSTALL_CHECKLIST.md`
 - `README.md`
 - `VERSION`

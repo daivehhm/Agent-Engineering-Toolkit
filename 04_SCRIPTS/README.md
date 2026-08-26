@@ -1,75 +1,12 @@
-# Scripts v1.2
+# Scripts v1.5
 
-## self-test-toolkit.ps1
+- `self-test-toolkit.ps1`: package static/self-consistency gate.
+- `preflight-windows.ps1`: native Windows environment/conflict/write-access preflight.
+- `install-agent-engineering.ps1`: canonical install/upgrade and adapter integration.
+- `refresh-machine-profile.ps1`: refresh managed machine discovery only.
+- `sync-agent-engineering.ps1`: sync three canonical Skills to vendor-native layouts with conflict prescan.
+- `verify-agent-engineering.ps1`: disk/config verification.
+- `bootstrap-project.ps1`: create/integrate project routers and Engineering Contract.
+- `uninstall-agent-engineering.ps1`: remove managed Toolkit assets without deleting unrelated user content.
 
-Validates package structure and known regression guards.
-
-Run before any installation.
-
-## preflight-windows.ps1
-
-Discovers the real Windows environment before mutation:
-
-- native Windows
-- effective CODEX_HOME
-- effective CLAUDE_CONFIG_DIR
-- target executables
-- active Codex override
-- same-name Skill conflicts
-- optional reversible write-access probes
-
-Example:
-
-```powershell
-.\04_SCRIPTS\preflight-windows.ps1 -TestWriteAccess
-```
-
-## install-agent-engineering.ps1
-
-Installs/updates canonical Toolkit, Skills, and global adapters.
-
-Always dry-run first.
-
-## sync-agent-engineering.ps1
-
-Synchronizes canonical Skills.
-
-Important v1.2 behavior:
-
-- Codex / Claude / Antigravity IDE → folder `SKILL.md`
-- Antigravity CLI → flat `<skill>.md`
-- scans all unmanaged conflicts before any Skill write
-
-## verify-agent-engineering.ps1
-
-Verifies disk/config state.
-
-Does not replace actual product loading smoke tests.
-
-## bootstrap-project.ps1
-
-Creates or non-destructively integrates project adapters.
-
-For existing projects prefer:
-
-```text
--IntegrateExisting
-```
-
-## uninstall-agent-engineering.ps1
-
-Removes Toolkit marker blocks and Toolkit-managed Skills only.
-
-It does not delete unmanaged content.
-
-## Recovery
-
-If installation stops partway:
-
-1. do not declare success;
-2. run `verify-agent-engineering.ps1`;
-3. resolve the reported conflict/permission issue;
-4. rerun the idempotent installer;
-5. if the user wants removal instead, run uninstall.
-
-Timestamped backups remain for manual recovery of prior content.
+Important: WhatIf must remain non-mutating; unknown unmanaged Skill conflicts fail closed; Antigravity CLI Skills are flat `.md` files; runtime loading smoke is separate from disk Verify.

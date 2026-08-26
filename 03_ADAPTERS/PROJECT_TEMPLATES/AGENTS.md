@@ -1,36 +1,19 @@
 # Project Agent Router
+Canonical project semantics: `ENGINEERING_CONTRACT.md`. Do not duplicate business thresholds/state/acceptance/scoring here.
 
-Canonical project semantics: `ENGINEERING_CONTRACT.md`.
+Use Work Class: SMALL_CHANGE / STAGE_WORK / FORMAL_ACCEPTANCE. Do not label risky work SMALL_CHANGE to avoid evidence.
 
-For semantic changes, read it and use `contract-impact-check`.
+Before terminal/filesystem/network/GPU/long-runtime work, read installed Machine Execution Profile if available and verify current Agent accessibility.
 
-Do NOT duplicate business thresholds/state semantics/acceptance criteria/scoring policy here.
+Workspace: one active Builder writer per worktree; Reviewer read-only by default; parallel Builders isolated; preserve dirty overlap.
 
-Before terminal/filesystem/process/network/GPU/long-runtime work, read `%USERPROFILE%\.agent-engineering\MACHINE_EXECUTION_PROFILE.md` if installed and verify current Agent accessibility.
-
-Cross-Agent defaults:
-- one active Builder writer per worktree;
-- Reviewer read-only by default;
-- parallel Builders require isolated working trees;
-- preserve unexplained dirty overlap.
-
-Skills:
-- contract-impact-check
-- stage-execution
-- independent-review
+Skills: contract-impact-check / stage-execution / independent-review.
 
 Project paths:
-
 ```text
 CURRENT_ROOT = <CURRENT_ROOT>
 LEGACY_REFERENCE_ROOT = <OPTIONAL>
 EXTERNAL_DATA_ROOT = <OPTIONAL>
 ```
-
-Test:
-
-```text
-<TEST_COMMAND>
-```
-
+Test: `<TEST_COMMAND>`.
 No git add/commit/push without explicit authorization.

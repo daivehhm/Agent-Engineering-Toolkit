@@ -1,99 +1,35 @@
-# Project Configuration Guide v1.2
+# Project Configuration Guide v1.5
 
-## Minimal project structure
+## Project Source of Truth
+每个项目默认以 `ENGINEERING_CONTRACT.md` 作为长期业务/工程语义唯一真源。AGENTS.md / CLAUDE.md / GEMINI.md 只是 Router，不复制阈值、状态机、Selection policy、Gate 或 Acceptance 规则。
 
+## Minimal Structure
 ```text
 <project-root>/
 ├─ AGENTS.md
 ├─ CLAUDE.md
 ├─ GEMINI.md
 ├─ ENGINEERING_CONTRACT.md
-└─ .agents/
-   └─ rules/
-      └─ engineering-contract-router.md
+└─ .agents/rules/engineering-contract-router.md
 ```
 
-## Existing project
-
-Do not replace existing agent instructions.
-
-Dry-run:
-
+## New Project
 ```powershell
 $HOME\.agent-engineering\scripts\bootstrap-project.ps1 `
   -ProjectRoot "D:\path\project" `
   -TestCommand "<real command>" `
-  -IntegrateExisting `
+  -ContractVersion "0.1.0" `
   -WhatIf
 ```
 
-Then run without `-WhatIf`.
+## Existing Project
+加 `-IntegrateExisting`。必须保留既有 AGENTS/CLAUDE/GEMINI 正文，只维护 Toolkit marker block；发现 dirty overlap 不静默覆盖。
 
-`-IntegrateExisting` preserves existing `AGENTS.md / CLAUDE.md / GEMINI.md` bodies and only adds/updates a Toolkit marker block.
+## Engineering Contract
+只放长期稳定的 Product Goal、Canonical Objects、Immutable Evidence、State/Gate/Persistence/Runtime、Parameter Registry、Review Independence 和 Deferred assumptions。当前 Bug、Stage Prompt、Pilot URL 不放这里。
 
-Even if `-Force` is also supplied, existing adapter files are not first overwritten by templates.
+## Work Class
+Work Class 属于 Stage：SMALL_CHANGE / STAGE_WORK / FORMAL_ACCEPTANCE。项目合同可以规定某些操作最低 Work Class，但 Adapter 不复制这些业务语义。
 
-## New project
-
-```powershell
-bootstrap-project.ps1 `
-  -ProjectRoot "D:\path\project" `
-  -TestCommand "<real command>"
-```
-
-Do not leave `<TEST_COMMAND>` as if setup were complete.
-
-## ENGINEERING_CONTRACT.md
-
-Keep only long-lived product/engineering contracts:
-
-- canonical objects
-- immutable evidence
-- state semantics
-- gate/validator authority
-- persistence identity
-- runtime acceptance
-- external side effects
-
-Do not put current bug lists or speculative future architecture here.
-
-## Antigravity IDE
-
-`.agents/rules/engineering-contract-router.md` must be discovered/activated by the IDE.
-
-Recommended activation:
-
-```text
-Model Decision
-```
-
-This activation is a runtime/UI property; file creation alone is not proof it is active.
-
-## Project Skills
-
-This Toolkit installs only global cross-Agent Skills.
-
-Create project-specific Skills only for truly project-specific workflows.
-
-Remember:
-
-- Codex project Skill: `.agents/skills/<skill>/SKILL.md`
-- Claude project Skill: `.claude/skills/<skill>/SKILL.md`
-- Antigravity IDE project Skill: `.agents/skills/<skill>/SKILL.md`
-- Antigravity CLI workspace Skill: `.agents/skills/<name>.md`
-
-Do not try to force one physical Skill layout on all products.
-
-
----
-
-# v1.4 Project Source of Truth
-
-ENGINEERING_CONTRACT.md 是默认项目语义唯一真源。
-AGENTS.md / CLAUDE.md / GEMINI.md 是路由器，不复制阈值/状态/验收语义。
-
-bootstrap-project supports:
-
-```powershell
--ContractVersion "0.1.0"
-```
+## Git
+默认不执行 git add / commit / push / PR，除非用户明确授权。

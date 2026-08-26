@@ -1,13 +1,8 @@
-# Architecture and Placement v1.4
+# Architecture and Placement v1.5
 
-Canonical home:
-
-```text
-%USERPROFILE%\.agent-engineering\
-```
+Canonical home: `%USERPROFILE%\.agent-engineering\`.
 
 Six layers:
-
 ```text
 L0 Machine Execution Profile
 L1 Global Engineering Invariants
@@ -17,8 +12,7 @@ L4 Stage Execution Contract
 L5 Independent Review / Human Gate
 ```
 
-Installed global layout:
-
+Installed layout:
 ```text
 ~/.agent-engineering/
 ├─ VERSION
@@ -31,7 +25,6 @@ Installed global layout:
 ```
 
 Project layout:
-
 ```text
 <project>/
 ├─ AGENTS.md
@@ -41,6 +34,4 @@ Project layout:
 └─ .agents/rules/engineering-contract-router.md
 ```
 
-Always-on content stays concise.
-Detailed workflows live in Skills.
-Project semantics load on demand.
+Always-on content stays concise. Detailed procedures live in Skills. Project semantics load on demand. Stage-specific evidence stays in Stage/Review artifacts.

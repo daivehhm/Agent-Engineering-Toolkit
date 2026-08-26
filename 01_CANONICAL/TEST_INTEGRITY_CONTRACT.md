@@ -1,5 +1,4 @@
-# Test Integrity Contract v1.2
-
+# Test Integrity Contract v1.5
 测试是 Contract 的可执行 oracle，不是“让 CI 绿”的装饰。
 
 ## Forbidden

@@ -3,8 +3,7 @@
 Contract-Version: <CONTRACT_VERSION>
 Project-Scope: <CURRENT_ROOT>
 
-> Canonical source for long-lived project product/engineering semantics.
-> Agent adapters MUST NOT maintain separate copies.
+> Canonical source for long-lived project product/engineering semantics. Agent adapters MUST NOT maintain separate copies.
 
 ## Product Goal
 `<ONE_SENTENCE_PRODUCT_GOAL>`
@@ -15,39 +14,27 @@ Project-Scope: <CURRENT_ROOT>
 | | | |
 
 ## Immutable Evidence
-
 ## State Machine Invariants
-
 ## Validation / Gate Authority
-| Gate/Validator | Responsibility | Inputs | Must Not Do |
-|---|---|---|---|
-| | | | |
-
 ## Persistence / Identity Contract
-
 ## Runtime Contract
 Machine-wide facts belong in Machine Execution Profile; project-specific runtime requirements belong here.
 
-## External Side Effects
-- Network:
-- Filesystem:
-- External services:
-- Git:
+## Work Classification Overrides
+Default policy comes from `WORK_CLASS_POLICY.md`. A project may require a stronger minimum for specific operations, e.g. schema migration => STAGE_WORK, release holdout => FORMAL_ACCEPTANCE. It must not weaken global safety.
 
 ## Parameter Registry
 | Parameter | Semantic Role | Class | Scope | Value | Evidence/Source | Change Authority |
 |---|---|---|---|---|---|---|
-| | | | | | | |
-
-Class: SAFETY_LIMIT / PROVISIONAL_DEFAULT / PILOT_OVERRIDE / CALIBRATED_THRESHOLD / ACCEPTANCE_THRESHOLD.
+Classes: SAFETY_LIMIT / PROVISIONAL_DEFAULT / PILOT_OVERRIDE / CALIBRATED_THRESHOLD / ACCEPTANCE_THRESHOLD.
 
 ## External Research Adoption Boundary
-External info starts as REFERENCE / HYPOTHESIS / CANDIDATE_PRACTICE and becomes frozen requirement only through explicit adoption/evidence/calibration.
+External information starts as REFERENCE / HYPOTHESIS / CANDIDATE_PRACTICE and becomes a frozen requirement only through explicit adoption/evidence/calibration.
 
 ## Review Independence Requirement
-Minimum formal review level: `R1_INDEPENDENT_CONTEXT_REVIEW` unless overridden.
+Default formal minimum: `R1_INDEPENDENT_CONTEXT_REVIEW`, unless project risk requires R2/R3.
 
 ## Review Evidence Contract
-Bind Stage/prompt version, Project Contract version, source baseline, runtime IDs, diff/tests/runtime evidence/claim-evidence matrix.
+STAGE_WORK / FORMAL_ACCEPTANCE bind Stage/Prompt/Project Contract/source/run and include Claim-Evidence Matrix, Critical Command Evidence, Stage Outcome, tests/runtime evidence, and source/Git state.
 
 ## Deferred / Not Yet Frozen

@@ -1,5 +1,4 @@
-# Contract Impact Check v1.2
-
+# Contract Impact Check v1.5
 用于业务语义/系统合同变化前的最小检查。
 
 不是独立 Phase；完成后继续当前 Stage。

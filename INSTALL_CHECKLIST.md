@@ -31,3 +31,13 @@
 - [ ] stage-execution includes capability preflight
 - [ ] one-writer rule understood
 - [ ] formal review >= R1 unless Project Contract requires stronger
+
+## v1.5 Evidence & Consistency
+
+- [ ] README/Overview contain current architecture only
+- [ ] Work Class policy present
+- [ ] Critical Command Evidence contract/template present
+- [ ] Stage Outcome contract/template present
+- [ ] Formal Review Package standard references both artifacts
+- [ ] No fourth procedural Skill
+- [ ] No MCP/DB/Dashboard/Receipt Server artifacts

@@ -1,7 +1,6 @@
-# Stage Binding and Parameter Policy
+# Stage Binding and Parameter Policy v1.5
 
-## Formal Stage Binding
-
+Formal Stage execution/review packages record:
 ```yaml
 stage_id:
 stage_contract_version:
@@ -13,68 +12,17 @@ source_baseline:
 git_state_or_non_git_baseline:
 runtime_run_ids:
 generated_at:
+work_class:
+required_review_level:
 ```
+No SHA/SHA256 is required by this Toolkit.
 
-No SHA/SHA256 required by this Toolkit.
+Use `SMALL_CHANGE`, `STAGE_WORK`, or `FORMAL_ACCEPTANCE` according to `WORK_CLASS_POLICY.md`.
 
-## Binding Rule
+Do not silently evaluate old evidence against a materially newer contract.
 
-Do not silently evaluate old execution evidence against a materially newer Stage Contract.
+External information is classified as `REFERENCE`, `HYPOTHESIS`, `CANDIDATE_PRACTICE`, `PROJECT_ADOPTED_REQUIREMENT`, or `CALIBRATED_RULE`.
 
-## External Research Is Not Automatically a Requirement
+Important parameters are classified as `SAFETY_LIMIT`, `PROVISIONAL_DEFAULT`, `PILOT_OVERRIDE`, `CALIBRATED_THRESHOLD`, or `ACCEPTANCE_THRESHOLD`.
 
-Classify as:
-
-```text
-REFERENCE
-HYPOTHESIS
-CANDIDATE_PRACTICE
-PROJECT_ADOPTED_REQUIREMENT
-CALIBRATED_RULE
-```
-
-Industry/vendor practice requires explicit adoption before becoming project requirement.
-
-## Parameter Identity
-
-Classes:
-
-```text
-SAFETY_LIMIT
-PROVISIONAL_DEFAULT
-PILOT_OVERRIDE
-CALIBRATED_THRESHOLD
-ACCEPTANCE_THRESHOLD
-```
-
-### SAFETY_LIMIT
-Protects resources/safety/corruption. Not automatically quality optimum.
-
-### PROVISIONAL_DEFAULT
-Temporary pre-calibration default.
-
-### PILOT_OVERRIDE
-Temporary named Pilot setting. Not production truth.
-
-### CALIBRATED_THRESHOLD
-Chosen from documented calibration evidence.
-
-### ACCEPTANCE_THRESHOLD
-Formal pass/fail criterion frozen before acceptance/holdout.
-
-## Parameter Record
-
-| Parameter | Semantic Role | Class | Scope | Value | Evidence/Source | Change Authority |
-|---|---|---|---|---|---|---|
-| | | | | | | |
-
-Do not reuse one numeric value across different semantics without contract evidence.
-
-## Holdout Integrity
-
-Once criteria are frozen:
-
-- do not tune against holdout inline;
-- preserve failure evidence;
-- perform separately authorized correction;
-- rerun only according to Project acceptance contract.
+For FORMAL_ACCEPTANCE: freeze criteria before the run, do not tune inline against holdout evidence, preserve failure evidence, and rerun only according to the Project acceptance contract.

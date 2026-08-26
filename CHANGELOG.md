@@ -1,5 +1,31 @@
 # Changelog
 
+## 1.5.0 — Evidence & Consistency Closure
+
+### Active documentation consistency
+- README is current-only; embedded legacy active documentation removed.
+- Overview uses the six-layer model only.
+- Active configuration/operations/loading guides rewritten as current canonical documentation.
+- History remains in CHANGELOG/Migration docs instead of append-only active bodies.
+
+### Work Class
+Added `SMALL_CHANGE`, `STAGE_WORK`, `FORMAL_ACCEPTANCE`. No lenient/standard/strict modes.
+
+### Critical Command Evidence
+Added canonical contract and JSONL template for key command evidence, preserving exit codes and requiring secret redaction. No shell interceptor, daemon, or Receipt DB.
+
+### Minimal Stage Outcome
+Added canonical `stage_outcome.json` contract/template to accumulate review rounds, blockers, false sign-off, Unit/Path/Runtime, and Human Gate outcomes. No Evaluation Platform/dashboard.
+
+### Review Package
+Formal Stage packages now standardize binding, Claim-Evidence Matrix, Critical Command Evidence, Stage Outcome, bounded tests/runtime/diff evidence, Git state, and Human sheet when required.
+
+### Deferred candidates
+Added evidence-triggered future candidates for automated command capture, evaluation aggregation, MCP/CI adapters, and enterprise policy integration.
+
+### Architecture boundary
+Still exactly three procedural Skills: contract-impact-check, stage-execution, independent-review. No MCP Server, DB, Dashboard, Receipt Server, Agent Manager, Policy Engine, or centralized lock.
+
 ## 1.4.0
 
 - Added Machine Execution Profile and refresh script.

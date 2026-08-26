@@ -1,60 +1,29 @@
-# Review ZIP Standard v1.2
+# Review Package Standard v1.5
 
-## Formal Stage 推荐内容
+Required for STAGE_WORK and FORMAL_ACCEPTANCE; normally not required for SMALL_CHANGE.
 
+Recommended structure:
 ```text
-review_report.md
-claim_evidence_matrix.md
-before_after_evidence.md      # Fix 类
-files_modified.md
-focused_tests.md
-full_regression_summary.md
-runtime_evidence.md
-commands_run.md
-git_state.md
-review_manifest.md
-review_diffs/ or reviewcopy/
+review_package/
+├─ stage_binding.yaml
+├─ claim_evidence_matrix.md
+├─ critical_command_evidence.jsonl
+├─ stage_outcome.json
+├─ tests/
+├─ runtime/
+├─ diff/
+├─ git_status.txt
+├─ human_review_sheet.md       # only when needed
+└─ manifest.md
 ```
+Not every directory is required if genuinely not applicable.
 
-根据项目增加产品证据。
+Critical commands follow `CRITICAL_COMMAND_EVIDENCE_CONTRACT.md`. Stage outcome follows `STAGE_OUTCOME_CONTRACT.md`.
 
-## claim_evidence_matrix.md
+Include bounded raw/machine evidence sufficient to verify claims. Human review sheet remains blank when handed off by Executor.
 
-每个重要成功 Claim 绑定：
+Manifest uses relative paths; no SHA/SHA256 required by default.
 
-```text
-canonical artifact
-run/task ID
-field/extraction method
-status
-```
+Exclude secrets, `.env`, token/cookie, private bulk media, model files, node_modules, full DB, and nested archives by default.
 
-## review_manifest.md
-
-记录：
-
-- file list
-- purpose
-- generated_at
-- canonical run IDs
-- forbidden-content check
-- Git state
-
-默认不要求 SHA/SHA256。
-
-## 默认排除
-
-- secret/token/cookie/.env
-- raw customer/private data
-- node_modules
-- model weights
-- nested archives
-- giant DB/raw transcript unless explicitly necessary
-
-## 目标
-
-Independent Reviewer 不访问 Executor 的脑内过程，也能判断：
-
-```text
-Claim 是否由同一轮真实 evidence 支持
-```
+Principle: enough to independently verify, not enough to reconstruct every keystroke.

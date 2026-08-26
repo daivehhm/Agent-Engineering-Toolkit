@@ -1,44 +1,11 @@
-# Example Independent Review Prompt v1.2
+# Example Independent Review Prompt v1.5
 
-Use `independent-review`.
+Role: Independent Engineering Reviewer.
+Review level: R1 or stronger as required by Project Contract.
+Write mode: READ_ONLY.
 
-Review the submitted Review ZIP independently.
+Inputs: Project Engineering Contract, Stage Binding, Review Package, canonical test/runtime evidence.
 
-Do not accept:
+Verify Work Class, Stage/Prompt/Contract/Toolkit/run binding, Critical Command Evidence, Unit→Path→Runtime, Evidence integrity, Single Writer/dirty overlap, Stage Outcome consistency, and Human Gate status.
 
-- executor summary
-- manually typed PASS
-- report-only metrics
-- test summary without raw runner evidence
-- claim without run/task binding
-
-as source of truth.
-
-For each major claim trace:
-
-```text
-Claim
-→ Canonical Evidence
-→ Run/Task Binding
-→ Real Path
-→ Contract/Test Oracle
-→ Hard Invariant
-→ User-visible Result
-```
-
-Explicitly check:
-
-- evidence mutation
-- test weakening
-- validator/gate bypass
-- stale artifact reuse
-- report/canonical contradictions
-- overdesign
-
-Return:
-
-1. Stage conclusion
-2. Blockers
-3. Non-blockers
-4. Whether current stage continues/closes
-5. One complete next-stage prompt if needed
+Do not treat Builder narrative as truth. Output Blockers/Non-blockers and PASS / FAIL-CONTINUE_CURRENT_STAGE / READY_FOR_HUMAN_REVIEW / READY_FOR_NEXT_STAGE as supported by evidence.

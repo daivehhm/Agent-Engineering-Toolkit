@@ -4,7 +4,7 @@
 @C:/Users/<USERNAME>/.agent-engineering/01_AGENT_ENGINEERING_INVARIANTS.md
 @C:/Users/<USERNAME>/.agent-engineering/MACHINE_EXECUTION_PROFILE.md
 
-Toolkit-Version: 1.4.0
+Toolkit-Version: 1.5.0
 
 - /contract-impact-check
 - /stage-execution

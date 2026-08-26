@@ -1,180 +1,31 @@
-# Troubleshooting v1.2
+# Troubleshooting v1.5
 
-## Start with preflight
+## Setup says file exists but Agent does not follow rules
+Run the Agent Loading Smoke Test. Disk Verify is not runtime proof.
 
-```powershell
-preflight-windows.ps1 -TestWriteAccess
-```
+## Codex ignores AGENTS.md
+Check effective CODEX_HOME and whether a non-empty AGENTS.override.md is active. Inspect conflicts before integrating Toolkit into an override.
 
-Do not diagnose Agent behavior before confirming the effective paths.
+## Claude ignores instructions
+Check effective CLAUDE_CONFIG_DIR and actual CLAUDE.md loading. Verify imports point to installed canonical files.
 
----
+## Antigravity IDE sees Skills but CLI does not
+IDE uses folder `SKILL.md`; CLI global Skills are flat `.md` files. Verify both independently.
 
-# Codex global rules missing
+## WhatIf changed files
+This is a failure. WhatIf must not create backups, directories, project files, or adapter writes.
 
-Check:
+## Same-name unmanaged Skill exists
+Fail closed. Inspect it. Only replace after explicit authorization; do not use Force blindly.
 
-```powershell
-$env:CODEX_HOME
-```
+## Machine Profile says tool exists but Agent cannot run it
+Expected possibility. Machine Available != Agent Accessible. Record the Stage capability as BLOCKED rather than weakening sandbox/security.
 
-Then inspect:
+## Multiple Agents edit same worktree
+Stop one writer or move Builders to isolated worktrees/working trees. Preserve dirty overlap.
 
-```text
-AGENTS.override.md
-AGENTS.md
-```
+## Stage evidence is too large
+Use Critical Command Evidence plus bounded raw outputs. Do not capture every terminal command or full environment.
 
-A non-empty override wins at global scope.
-
-Verify must show the Toolkit in the active file.
-
----
-
-# Codex Skill missing
-
-Check:
-
-```text
-%USERPROFILE%\.agents\skills\<skill>\SKILL.md
-```
-
-Then use `/skills` or explicit `$skill-name`.
-
----
-
-# Claude global rules missing
-
-Check:
-
-```powershell
-$env:CLAUDE_CONFIG_DIR
-```
-
-Then run:
-
-```text
-/context
-```
-
-Confirm the effective `CLAUDE.md`.
-
----
-
-# Claude Skill missing
-
-Check:
-
-```text
-<ClaudeHome>\skills\<skill>\SKILL.md
-```
-
-Invoke:
-
-```text
-/contract-impact-check
-```
-
----
-
-# Antigravity IDE Skill works but CLI Skill does not
-
-Do not compare only the same directory layout.
-
-IDE:
-
-```text
-~/.gemini/config/skills/<skill>/SKILL.md
-```
-
-CLI:
-
-```text
-~/.gemini/antigravity-cli/skills/<skill>.md
-```
-
-v1.1 used the wrong directory-style layout for CLI. v1.2 migrates recognized Toolkit v1.1 directories to flat CLI files.
-
----
-
-# Antigravity CLI still has `<skill>/SKILL.md`
-
-Verify will fail.
-
-Run v1.2 sync. It should back up and remove recognized Toolkit legacy folders.
-
-If the directory is unmanaged, sync fails closed; inspect it before replacement.
-
----
-
-# Workspace Contract not active in Antigravity IDE
-
-File existence:
-
-```text
-.agents/rules/engineering-contract-router.md
-```
-
-does not prove activation.
-
-Check:
-
-```text
-Customizations → Rules
-```
-
-Recommended activation:
-
-```text
-Model Decision
-```
-
----
-
-# Sync reports unmanaged Skill conflict
-
-Do not immediately use Force.
-
-Inspect the same-name Skill.
-
-Only if replacement is explicitly intended:
-
-```powershell
-sync-agent-engineering.ps1 -ForceManagedSkillOverwrite
-```
-
-The script backs up replaced content.
-
----
-
-# `-WhatIf` created files/backups
-
-That is a Toolkit defect.
-
-v1.2 contract says dry-run does not create:
-- config files
-- backups
-- project directories
-
-Stop and report the exact path created.
-
----
-
-# Verify PASS but Agent ignores rule
-
-Disk verification is not runtime proof.
-
-Run:
-
-```text
-09_AGENT_LOADING_SMOKE_TEST.md
-```
-
-If loading fails, diagnose:
-- session restart
-- effective config path
-- override
-- Agent discovery behavior
-- sandbox/permission
-
-Do not rewrite engineering rules to compensate for a loading problem.
+## Stage Outcome disagrees with tests/runtime
+Canonical evidence wins. Correct `stage_outcome.json`; never rewrite canonical evidence to match the summary.

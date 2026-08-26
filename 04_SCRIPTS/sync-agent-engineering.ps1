@@ -170,7 +170,7 @@ foreach ($skill in $skills) {
     }
 
     if ($PSCmdlet.ShouldProcess($flat, "Install Antigravity CLI flat skill $skill")) {
-        Set-Content -Path $flat -Value $content -Encoding UTF8 -NoNewline
+        Set-Content -Path $flat -Value $content -Encoding UTF8
         Set-Content -Path $sidecar -Value "Agent-Engineering-Toolkit managed skill: $skill" -Encoding ASCII
     }
 }

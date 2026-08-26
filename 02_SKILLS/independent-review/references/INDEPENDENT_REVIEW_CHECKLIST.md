@@ -1,57 +1,36 @@
-# Independent Review Checklist
+# Independent Review Checklist v1.5
 
-## Declare Review Independence
+## Review Independence
+Declare `R0_SELF_REVIEW`, `R1_INDEPENDENT_CONTEXT_REVIEW`, `R2_CROSS_AGENT_OR_MODEL_REVIEW`, or `R3_HUMAN_PRODUCT_ACCEPTANCE`. R0 is not formal Independent Review.
 
-- `R0_SELF_REVIEW`
-- `R1_INDEPENDENT_CONTEXT_REVIEW`
-- `R2_CROSS_AGENT_OR_MODEL_REVIEW`
-- `R3_HUMAN_PRODUCT_ACCEPTANCE`
+Reviewer defaults to `READ_ONLY`; fixing requires closing Review and beginning a separate Builder/Fix evidence chain.
 
-R0 is not formal Independent Review. Default formal minimum is R1 unless Project Contract requires stronger review.
-
-## Reviewer Write Mode
-Default `READ_ONLY`. Fixing requires closing Review and beginning a separate Builder/Fix activity.
-
-## Validate Binding
-Check Stage/Prompt/Project Contract/Toolkit/source baseline/run IDs/generated time.
+## Work Class / Binding
+Verify Work Class was not used to bypass evidence. Check Stage ID/version, Work Class, required Review level, Prompt version, Project Contract version, Toolkit version, source baseline, and run IDs.
 
 ## Core Trace
+`Claim → Canonical Evidence → Real Data Path → Contract/Gate → Invariant → User-visible Result`.
 
-```text
-Claim
-→ Canonical Evidence
-→ Real Data Path
-→ Contract / Gate
-→ Invariant
-→ User-visible Result
-```
+## Critical Command Evidence
+Check key commands exist, exit codes are preserved, reruns append rather than rewrite, evidence paths resolve, secrets are redacted, and full environment dumps are not default evidence.
 
 ## Evidence Integrity
-Check score/timestamp mutation, test weakening, hidden exclusions, report/canonical mismatch, stale run IDs, configured runtime reported as actual runtime.
+Check for score/timestamp mutation, hidden failures, test weakening, manual report count drift, stale run IDs, configured runtime presented as actual runtime, and failed command evidence removed after rerun.
 
 ## Capability / Workspace Integrity
-Check actual Agent access, dirty-overlap preservation, single-writer discipline, Reviewer read-only discipline.
-
-## Contract Impact
-Check changed semantics, validator/gate assumptions, contract updates, evidence mutation, Gate weakening.
-
-## Real Path
-Synthetic helper tests alone are insufficient for real-path claims.
-
-## Parameter Identity
-Verify Safety / Provisional / Pilot / Calibrated / Acceptance class and semantic role.
-
-## External Research Promotion
-Do not accept “industry does X” as proof this project froze X.
+Verify current Agent capability, Single Writer, dirty-overlap preservation, and Reviewer read-only behavior.
 
 ## Test Layers
-Distinguish Unit / Path Integration / Real Runtime.
+Distinguish Unit, Path Integration, and Real Runtime.
 
-## Overdesign Check
-Reject speculative new models/platforms/grouping/registries not required by current evidence.
+## External Evidence Sources
+CI/build/lint/security scan may support claims but do not automatically grant Stage PASS.
 
-## Human/Product Gate
-Confirm Executor did not pre-fill Human acceptance.
+## Formal Acceptance
+Verify criteria were frozen, inline holdout tuning did not occur, failure evidence was preserved, and rerun policy was followed.
+
+## Stage Outcome
+Verify `stage_outcome.json` agrees with canonical evidence; canonical evidence wins on conflict.
 
 ## Result
-PASS / PASS_WITH_NONBLOCKING_ITEMS / FAIL-CONTINUE_CURRENT_STAGE / READY_FOR_HUMAN_REVIEW / READY_FOR_NEXT_STAGE.
+May output PASS, PASS_WITH_NONBLOCKING_ITEMS, FAIL/CONTINUE_CURRENT_STAGE, READY_FOR_HUMAN_REVIEW, or READY_FOR_NEXT_STAGE. Separate Blocker / Non-blocker.

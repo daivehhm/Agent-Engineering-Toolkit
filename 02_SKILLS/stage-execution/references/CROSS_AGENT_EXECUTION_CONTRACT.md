@@ -90,3 +90,7 @@ They MUST NOT maintain independent copies of business thresholds, state semantic
 Prefer Agent-neutral Stage Contracts.
 
 Vendor-specific content is limited to loading paths, tool invocation, sandbox behavior, Skill invocation, and runtime adapters.
+
+
+## Work Classification
+Use SMALL_CHANGE / STAGE_WORK / FORMAL_ACCEPTANCE according to `WORK_CLASS_POLICY.md`. Work Class determines minimum process/evidence, not whether safety rules apply.
