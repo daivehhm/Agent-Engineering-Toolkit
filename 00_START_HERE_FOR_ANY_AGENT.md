@@ -243,3 +243,22 @@ This must merge Toolkit marker blocks without replacing unrelated existing conte
 - Do not treat `file exists` as `Agent loaded it`.
 - Do not treat `verify PASS` as runtime loading PASS.
 - Do not report success from narrative output when a script exit/result says FAIL.
+
+
+---
+
+# v1.4 Machine Execution Profile
+
+安装后创建/保留：
+
+```text
+%USERPROFILE%\.agent-engineering\MACHINE_EXECUTION_PROFILE.md
+```
+
+刷新：
+
+```powershell
+$HOME\.agent-engineering\scripts\refresh-machine-profile.ps1
+```
+
+Machine discovery 不是当前 Agent 权限证明；真实 Stage 仍需 Capability Preflight。

@@ -112,3 +112,14 @@ evidence:
 ## Final Notes
 
 Do not write `SETUP_VERIFIED` unless all locally installed targets are `CONFIGURED_AND_RUNTIME_VERIFIED`.
+
+
+## Machine Execution Profile
+
+```text
+path:
+schema:
+discovery_state:
+user_policy_preserved:
+machine_capability_vs_agent_permission_acknowledged:
+```

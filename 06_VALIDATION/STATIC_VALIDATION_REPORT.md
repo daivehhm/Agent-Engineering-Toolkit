@@ -1,90 +1,36 @@
-# Static Validation Report — v1.3 FINAL
+# Static Validation Report — v1.4
 
-## Result
+Result: `PASS`
 
-`PASS`
+- Version: `1.4.0`
+- Procedural Skills: exactly `3`
+- Static errors: `0`
+- Static warnings: `0`
+- Six-layer model: PASS
+- Machine Execution Profile: PASS
+- Capability Preflight: PASS
+- Single Writer per Worktree: PASS
+- R0/R1/R2/R3 Review Independence: PASS
+- Project semantic single-source rule: PASS
+- Stage/Prompt/Contract/Toolkit/Run binding: PASS
+- Parameter identity policy: PASS
+- External Research promotion boundary: PASS
+- Installer Machine Profile integration: PASS
+- Verify Machine Profile integration: PASS
+- Bootstrap ContractVersion integration: PASS
+- PowerShell here-string structural scan: PASS
+- Package hygiene: PASS
 
-## Final package gate
+Static PASS is not native Windows runtime PASS.
 
-```text
-errors = 0
-warnings = 0
-version = 1.3.0
-```
-
-## Checked
-
-### Zero-context setup
-
-- root `00_START_HERE_FOR_ANY_AGENT.md`
-- deterministic setup sequence
-- explicit setup result states
-- standardized installation report template
-
-### Agent discovery/adapters
-
-- Codex effective `CODEX_HOME`
-- Codex active `AGENTS.override.md` handling
-- Codex user folder Skills
-- Claude effective `CLAUDE_CONFIG_DIR`
-- Claude user folder Skills
-- Antigravity IDE global rule and folder Skills
-- Antigravity CLI global flat Markdown Skills
-
-### Safety / non-destructive behavior
-
-- native Windows fail-closed
-- `-WhatIf` backup/write guards
-- unmanaged Skill conflict pre-scan
-- recognized legacy Toolkit migration
-- unknown/unversioned canonical install fail-closed
-- existing project adapters preserved with `-IntegrateExisting`
-- project overwrite backups
-- no automatic auth/model/provider/sandbox changes
-- no Git commit/push behavior
-
-### Evidence integrity
-
-- package self-test
-- native Windows preflight
-- disk/config Verify
-- real Agent Loading Smoke Test kept as separate gates
-- `SETUP_VERIFIED / SETUP_PARTIALLY_VERIFIED / SETUP_BLOCKED`
-- per-target runtime status reporting
-
-### PowerShell regression checks
-
-- no `$skill-name` interpolation regression
-- no double-quoted Markdown-backtick regex in CLI flatten logic
-- no escaped `$f/$final` preflight reporting regression
-- project marker here-strings use literal form
-- raw brace counts balanced
-- here-string delimiter counts balanced
-
-### Package hygiene
-
-- no nested ZIP/RAR/7z
-- no `.env`/cookie/private-key payloads
-- canonical Skill names unique
-- Skill frontmatter present
-- managed markers are v1.2.0
-- Global Invariants remain concise
-
-## Not claimed
-
-This static PASS is **not** Windows runtime installation PASS.
-
-The remaining required local proof is:
+Required local proof:
 
 ```text
-Package Self-Test
-→ Native Windows Preflight
+Self-Test
+→ Preflight
 → WhatIf
 → Install
-→ Disk Verify
-→ Actual Agent Loading Smoke Test
+→ Machine Profile Refresh
+→ Verify
+→ Agent Loading Smoke
 ```
-
-Only then may the local machine be reported as:
-
-`SETUP_VERIFIED`

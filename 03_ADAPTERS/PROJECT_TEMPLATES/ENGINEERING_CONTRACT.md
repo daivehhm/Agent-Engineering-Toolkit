@@ -1,86 +1,53 @@
 # <PROJECT_NAME> Engineering Contract
 
-> 只存长期产品/工程合同，不存本轮 Bug/Prompt。
+Contract-Version: <CONTRACT_VERSION>
+Project-Scope: <CURRENT_ROOT>
 
-## 1. Product Goal
+> Canonical source for long-lived project product/engineering semantics.
+> Agent adapters MUST NOT maintain separate copies.
 
-`<ONE_SENTENCE_GOAL>`
+## Product Goal
+`<ONE_SENTENCE_PRODUCT_GOAL>`
 
-## 2. Canonical Objects
-
+## Canonical Objects
 | Object | Authority | Semantics |
 |---|---|---|
-| `<object>` | `<module/schema>` | `<meaning>` |
+| | | |
 
-## 3. Immutable Evidence
+## Immutable Evidence
 
-一旦产生不得为通过 Gate 而修改：
+## State Machine Invariants
 
-- `<score>`
-- `<timestamp>`
-- `<raw evaluator result>`
+## Validation / Gate Authority
+| Gate/Validator | Responsibility | Inputs | Must Not Do |
+|---|---|---|---|
+| | | | |
 
-## 4. State Machine Invariants
+## Persistence / Identity Contract
 
-- `<terminal states>`
-- `<who may write terminal state>`
-- `<failure/no-result semantics>`
+## Runtime Contract
+Machine-wide facts belong in Machine Execution Profile; project-specific runtime requirements belong here.
 
-## 5. Validator / Gate Contract
-
-| Gate | Validates | Must Not Assume / Do |
-|---|---|---|
-| `<gate>` | `<semantic>` | `<forbidden shortcut>` |
-
-如果业务策略变化导致 Gate 假设变化：
-
-先 Contract Impact Check，再同步更新 contract/test/gate。
-
-## 6. Test Oracle Contract
-
-- 哪些测试代表核心业务合同？
-- 哪些必须 fail-closed？
-- 哪些是 unit/path/runtime 层？
-
-## 7. Persistence / Cache Contract
-
-- source identity
-- model/config binding
-- stale-data rejection
-- migration rules
-
-## 8. Runtime Contract
-
-- supported runtime
-- external binaries/services
-- canonical real path
-- fallback/provenance rules
-
-## 9. External Side Effects
-
+## External Side Effects
 - Network:
 - Filesystem:
-- Git:
 - External services:
+- Git:
 
-## 10. Review Evidence Contract
+## Parameter Registry
+| Parameter | Semantic Role | Class | Scope | Value | Evidence/Source | Change Authority |
+|---|---|---|---|---|---|---|
+| | | | | | | |
 
-正式 Stage 最少：
+Class: SAFETY_LIMIT / PROVISIONAL_DEFAULT / PILOT_OVERRIDE / CALIBRATED_THRESHOLD / ACCEPTANCE_THRESHOLD.
 
-- claim-evidence matrix
-- changed source/test
-- test runner evidence
-- path/runtime evidence
-- run/task IDs
-- Git state
+## External Research Adoption Boundary
+External info starts as REFERENCE / HYPOTHESIS / CANDIDATE_PRACTICE and becomes frozen requirement only through explicit adoption/evidence/calibration.
 
-## 11. Deferred / Provisional
+## Review Independence Requirement
+Minimum formal review level: `R1_INDEPENDENT_CONTEXT_REVIEW` unless overridden.
 
-列出尚未冻结的：
+## Review Evidence Contract
+Bind Stage/prompt version, Project Contract version, source baseline, runtime IDs, diff/tests/runtime evidence/claim-evidence matrix.
 
-- thresholds
-- limits
-- architectures
-- future modes
-
-避免 provisional default 被误当 acceptance truth。
+## Deferred / Not Yet Frozen

@@ -1,8 +1,6 @@
 @AGENTS.md
 
 # Antigravity Project Adapter
-
-Use:
-- contract-impact-check for semantic/contract changes
-- stage-execution for complete engineering stages
-- independent-review for independent review
+AGENTS.md is the router. Do not duplicate project business semantics here.
+Use contract-impact-check, stage-execution, independent-review as relevant.
+Read ENGINEERING_CONTRACT.md on demand for project semantic changes/review.

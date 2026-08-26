@@ -43,8 +43,17 @@ function Get-AntigravityCliSkillContent([string]$SourceDir) {
 if ($env:OS -ne "Windows_NT") { Fail "Verification is not running in native Windows PowerShell." }
 
 $canonical = Join-Path $InstallRoot "01_AGENT_ENGINEERING_INVARIANTS.md"
+$machineProfile = Join-Path $InstallRoot "MACHINE_EXECUTION_PROFILE.md"
 $versionFile = Join-Path $InstallRoot "VERSION"
 if (Test-Path $canonical) { Pass "Canonical invariants exist" } else { Fail "Missing canonical invariants: $canonical" }
+if (Test-Path $machineProfile) {
+    $mp = Get-Content $machineProfile -Raw -Encoding UTF8
+    if ($mp.Contains("Profile-Schema-Version: 1.0")) { Pass "Machine Execution Profile schema present" } else { Fail "Machine profile schema missing/mismatched" }
+    if ($mp.Contains("Discovery-State: REFRESHED")) { Pass "Machine Execution Profile discovery refreshed" } else { Warn "Machine profile discovery not refreshed" }
+    if ($mp.Contains("DISCOVERY_IS_MACHINE_FACT_ONLY_NOT_AGENT_PERMISSION")) { Pass "Machine capability-vs-permission boundary recorded" } else { Fail "Machine profile interpretation boundary missing" }
+} else {
+    Fail "Machine Execution Profile missing: $machineProfile"
+}
 $installedVersion = if (Test-Path $versionFile) { (Get-Content $versionFile -Raw -Encoding UTF8).Trim() } else { $null }
 if ($installedVersion) { Pass "Installed Toolkit version: $installedVersion" } else { Fail "Installed VERSION file missing" }
 
@@ -80,17 +89,22 @@ if ((Test-Path $activeCodexFile) -and (Test-Path $canonical)) {
     $canonicalText = (Get-Content $canonical -Raw -Encoding UTF8).Trim()
     if ($activeText.Contains($canonicalText)) { Pass "Active Codex file contains current canonical invariant text" } else { Fail "Active Codex Toolkit block is stale/mismatched" }
     if ($installedVersion -and $activeText.Contains("Toolkit-Version: $installedVersion")) { Pass "Active Codex adapter version matches" } else { Fail "Active Codex adapter version stale/missing" }
+    $mpForward = $machineProfile.Replace("\","/")
+    if ($activeText.Contains($mpForward)) { Pass "Active Codex adapter references Machine Execution Profile" } else { Fail "Active Codex adapter does not reference Machine Execution Profile" }
 }
 
 $canonForward = $canonical.Replace("\","/")
+$machineForward = $machineProfile.Replace("\","/")
 if (Test-Path $claudeMd) {
     $ct = Get-Content $claudeMd -Raw -Encoding UTF8
     if ($ct.Contains("@$canonForward")) { Pass "Claude imports installed canonical invariants" } else { Fail "Claude canonical import missing/mismatched" }
+    if ($ct.Contains("@$machineForward")) { Pass "Claude imports Machine Execution Profile" } else { Fail "Claude machine profile import missing/mismatched" }
     if ($installedVersion -and $ct.Contains("Toolkit-Version: $installedVersion")) { Pass "Claude adapter version matches" } else { Fail "Claude adapter version stale/missing" }
 }
 if (Test-Path $geminiMd) {
     $gt = Get-Content $geminiMd -Raw -Encoding UTF8
     if ($gt.Contains("@$canonForward")) { Pass "Antigravity global rule imports installed canonical invariants" } else { Fail "Antigravity canonical import missing/mismatched" }
+    if ($gt.Contains("@$machineForward")) { Pass "Antigravity global rule imports Machine Execution Profile" } else { Fail "Antigravity machine profile import missing/mismatched" }
     if ($installedVersion -and $gt.Contains("Toolkit-Version: $installedVersion")) { Pass "Antigravity adapter version matches" } else { Fail "Antigravity adapter version stale/missing" }
     if ($gt.Length -le 12000) { Pass "Antigravity GEMINI.md within 12,000-character limit" } else { Fail "Antigravity GEMINI.md exceeds 12,000 characters" }
 }

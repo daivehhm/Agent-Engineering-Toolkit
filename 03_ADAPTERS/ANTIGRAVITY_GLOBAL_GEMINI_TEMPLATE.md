@@ -1,8 +1,10 @@
+# Agent Engineering Global Rules
+
 <!-- AGENT-ENGINEERING-TOOLKIT:BEGIN -->
 @C:/Users/<USERNAME>/.agent-engineering/01_AGENT_ENGINEERING_INVARIANTS.md
+@C:/Users/<USERNAME>/.agent-engineering/MACHINE_EXECUTION_PROFILE.md
 
-Use:
-- contract-impact-check for semantic/contract changes
-- stage-execution for stage-level implementation/fix
-- independent-review for independent review
+Toolkit-Version: 1.4.0
+
+Use contract-impact-check, stage-execution, independent-review as relevant.
 <!-- AGENT-ENGINEERING-TOOLKIT:END -->

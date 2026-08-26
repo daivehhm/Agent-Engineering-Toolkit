@@ -142,3 +142,21 @@ Machine final state:
 - all installed targets verified → `SETUP_VERIFIED`
 - at least one configured but unavailable for runtime test → `SETUP_PARTIALLY_VERIFIED`
 - unresolved conflict/permission/loading failure → `SETUP_BLOCKED`
+
+
+---
+
+# v1.4 Machine Profile Loading Check
+
+Ask:
+
+```text
+Identify the Machine Execution Profile currently in force.
+Why does an installed tool not prove this session can use it?
+```
+
+Expected:
+
+```text
+Machine Available != Agent Accessible
+```

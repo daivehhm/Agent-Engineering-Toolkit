@@ -1,15 +1,12 @@
-# Deployment Matrix v1.2
+# Deployment Matrix v1.4
 
-| Capability | Codex | Claude Code | Antigravity IDE | Antigravity CLI |
+| Layer | Canonical Scope | Codex | Claude Code | Antigravity |
 |---|---|---|---|---|
-| Global instructions | `$CODEX_HOME/AGENTS(.override).md` | `<ClaudeHome>/CLAUDE.md` | `~/.gemini/GEMINI.md` | `~/.gemini/GEMINI.md` |
-| Global Skill layout | `~/.agents/skills/<skill>/SKILL.md` | `<ClaudeHome>/skills/<skill>/SKILL.md` | `~/.gemini/config/skills/<skill>/SKILL.md` | `~/.gemini/antigravity-cli/skills/<skill>.md` |
-| Project instruction | `AGENTS.md` | `CLAUDE.md` | `.agents/rules/` | root `AGENTS.md` / `GEMINI.md` |
-| Project Skill | `.agents/skills/<skill>/SKILL.md` | `.claude/skills/<skill>/SKILL.md` | `.agents/skills/<skill>/SKILL.md` | `.agents/skills/<name>.md` |
-| Runtime smoke | new Codex session | `/context` + `/skill` | Rules/Skills UI + task | new `agy` + `/skill` |
+| L0 Machine | ~/.agent-engineering/MACHINE_EXECUTION_PROFILE.md | referenced by active AGENTS | imported | imported |
+| L1 Invariants | ~/.agent-engineering/01...md | active AGENTS block | imported | imported |
+| L2 Skills/Adapter | vendor native | user folder Skills | user folder Skills | IDE folder / CLI flat Skills |
+| L3 Project | ENGINEERING_CONTRACT.md | AGENTS router | CLAUDE→AGENTS | GEMINI/Rules router |
+| L4 Stage | task artifact | Agent-neutral | Agent-neutral | Agent-neutral |
+| L5 Review | review artifact | R1/R2 | R1/R2 | R1/R2; Human R3 |
 
-## Canonical source
-
-Toolkit canonical Skills remain open-standard folder Skills.
-
-Only the Antigravity CLI adapter flattens them for its CLI-specific slash-command layout.
+Do not maintain separate project business specifications per Agent.

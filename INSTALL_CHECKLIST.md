@@ -18,3 +18,16 @@
 - [ ] Antigravity CLI flat Skill runtime loading tested if installed
 - [ ] `agent-engineering-installation-report.md` created
 - [ ] Final state is one of SETUP_VERIFIED / SETUP_PARTIALLY_VERIFIED / SETUP_BLOCKED
+
+
+## v1.4
+
+- [ ] Machine Execution Profile exists
+- [ ] discovery state REFRESHED
+- [ ] User Policy preserved
+- [ ] Codex references Machine Profile
+- [ ] Claude imports Machine Profile
+- [ ] Antigravity imports Machine Profile
+- [ ] stage-execution includes capability preflight
+- [ ] one-writer rule understood
+- [ ] formal review >= R1 unless Project Contract requires stronger

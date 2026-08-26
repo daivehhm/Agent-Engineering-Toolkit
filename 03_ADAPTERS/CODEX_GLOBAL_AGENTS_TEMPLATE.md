@@ -1,14 +1,15 @@
+# Codex Global Engineering Defaults
+
 <!-- AGENT-ENGINEERING-TOOLKIT:BEGIN -->
-# Agent Engineering Global Rules
+Toolkit-Version: 1.4.0
 
-The content of the canonical file below is injected here by the installer:
+Machine Execution Profile:
+`%USERPROFILE%\.agent-engineering\MACHINE_EXECUTION_PROFILE.md`
 
-`%USERPROFILE%\.agent-engineering\01_AGENT_ENGINEERING_INVARIANTS.md`
+Before real execution, read it and perform capability preflight.
 
-Reusable skills:
-
-- contract-impact-check
-- stage-execution
-- independent-review
-
+Skills:
+- $contract-impact-check
+- $stage-execution
+- $independent-review
 <!-- AGENT-ENGINEERING-TOOLKIT:END -->

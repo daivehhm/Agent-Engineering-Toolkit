@@ -515,3 +515,19 @@ SETUP_VERIFIED
 ```text
 00_GUIDE/14_ROLES_LIFECYCLE_AND_SUCCESS_CRITERIA.md
 ```
+
+
+---
+
+# v1.4 六层作用域模型
+
+```text
+L0 Machine Execution Profile
+L1 Global Engineering Invariants
+L2 Agent Adapter / Capability
+L3 Project Engineering Contract
+L4 Stage Execution Contract
+L5 Independent Review / Human Gate
+```
+
+Toolkit 是跨 Agent、跨项目能力；项目合同属于单项目；Stage Prompt 属于单项目单阶段；Codex / Claude / Antigravity 是执行载体。

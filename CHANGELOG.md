@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.4.0
+
+- Added Machine Execution Profile and refresh script.
+- Added six-layer scope model.
+- Added capability preflight.
+- Added Single Writer per Worktree.
+- Added R0/R1/R2/R3 review independence.
+- Added Project semantic single-source rule.
+- Added Stage/Prompt/Contract/Toolkit/source/run binding.
+- Added external-research promotion boundary.
+- Added parameter identity classes.
+- Bootstrap supports ContractVersion.
+- Verify checks Machine Profile/adapters.
+- No new procedural Skill or governance platform.
+
 ## 1.3.0
 
 ### Product-level documentation completion

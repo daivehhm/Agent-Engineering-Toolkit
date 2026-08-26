@@ -1,3 +1,48 @@
+# Agent Engineering Toolkit v1.4
+
+跨 Codex / Claude Code / Antigravity 的 Windows 本地工程执行标准与配置包。
+
+## v1.4
+
+```text
+L0 Machine Execution Profile
+L1 Global Engineering Invariants
+L2 Agent Adapter / Capability
+L3 Project Engineering Contract
+L4 Stage Execution Contract
+L5 Independent Review / Human Gate
+```
+
+新增：Machine Profile、Capability Preflight、Single Writer、R0/R1/R2/R3 Review、Project source-of-truth、Stage/run binding、External Research promotion boundary、Parameter identity。
+
+仍然只有三个程序性 Skill：
+
+```text
+contract-impact-check
+stage-execution
+independent-review
+```
+
+没有新增 Agent Manager / Registry / Policy Server / Event Bus。
+
+第一次使用：
+
+```text
+00_OVERVIEW.md
+00_START_HERE_FOR_ANY_AGENT.md
+00_GUIDE/15_SIX_LAYER_SCOPE_MODEL.md
+```
+
+刷新 Machine Profile：
+
+```powershell
+$HOME\.agent-engineering\scripts\refresh-machine-profile.ps1
+```
+
+---
+
+## Earlier documentation retained
+
 # Agent Engineering Toolkit v1.3
 
 面向 Windows 本地 **Codex / Claude Code / Google Antigravity IDE / Antigravity CLI** 的跨 Agent 工程规则与 Skill 配置包。

@@ -1,6 +1,25 @@
-# Project Agent Rules
+# Project Agent Router
 
-## Project Root
+Canonical project semantics: `ENGINEERING_CONTRACT.md`.
+
+For semantic changes, read it and use `contract-impact-check`.
+
+Do NOT duplicate business thresholds/state semantics/acceptance criteria/scoring policy here.
+
+Before terminal/filesystem/process/network/GPU/long-runtime work, read `%USERPROFILE%\.agent-engineering\MACHINE_EXECUTION_PROFILE.md` if installed and verify current Agent accessibility.
+
+Cross-Agent defaults:
+- one active Builder writer per worktree;
+- Reviewer read-only by default;
+- parallel Builders require isolated working trees;
+- preserve unexplained dirty overlap.
+
+Skills:
+- contract-impact-check
+- stage-execution
+- independent-review
+
+Project paths:
 
 ```text
 CURRENT_ROOT = <CURRENT_ROOT>
@@ -8,40 +27,10 @@ LEGACY_REFERENCE_ROOT = <OPTIONAL>
 EXTERNAL_DATA_ROOT = <OPTIONAL>
 ```
 
-## Project Engineering Contract
-
-For tasks that change:
-
-- scoring / selection / routing / completeness
-- schema / persistence semantics
-- state transitions
-- validator / gate behavior
-- externally observable product semantics
-
-MUST read:
-
-```text
-ENGINEERING_CONTRACT.md
-```
-
-and use `contract-impact-check` before editing.
-
-Do not load the full contract for trivial typo/cosmetic tasks.
-
-## Reusable Skills
-
-- contract-impact-check
-- stage-execution
-- independent-review
-
-## Safety / Git
-
-- Respect read-only/legacy roots.
-- Do not mutate canonical evidence to satisfy a Gate.
-- No git add / commit / push unless explicitly authorized by the current task.
-
-## Test Entry
+Test:
 
 ```text
 <TEST_COMMAND>
 ```
+
+No git add/commit/push without explicit authorization.

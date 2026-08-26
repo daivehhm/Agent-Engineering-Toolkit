@@ -1,112 +1,46 @@
-# Architecture and Placement v1.2
+# Architecture and Placement v1.4
 
-## 1. Agent-neutral Canonical Source
-
-Single long-term editing source:
+Canonical home:
 
 ```text
 %USERPROFILE%\.agent-engineering\
 ```
 
-Do not use `.codex`, `.claude`, or `.gemini` as the canonical source. They are vendor adapters / installed copies.
-
-## 2. Four layers
-
-### Layer 1 — Global Hard Invariants + Workflow Defaults
-
-Always-On, intentionally concise:
+Six layers:
 
 ```text
-01_AGENT_ENGINEERING_INVARIANTS.md
+L0 Machine Execution Profile
+L1 Global Engineering Invariants
+L2 Agent Adapter / Capability
+L3 Project Engineering Contract
+L4 Stage Execution Contract
+L5 Independent Review / Human Gate
 ```
 
-### Layer 2 — Cross-Agent Skills
-
-On-demand:
+Installed global layout:
 
 ```text
-contract-impact-check
-stage-execution
-independent-review
+~/.agent-engineering/
+├─ VERSION
+├─ 01_AGENT_ENGINEERING_INVARIANTS.md
+├─ MACHINE_EXECUTION_PROFILE.md
+├─ canonical/
+├─ skills/
+├─ project-templates/
+└─ scripts/
 ```
 
-### Layer 3 — Project Engineering Contract
-
-Long-lived project semantics:
+Project layout:
 
 ```text
-ENGINEERING_CONTRACT.md
+<project>/
+├─ AGENTS.md
+├─ CLAUDE.md
+├─ GEMINI.md
+├─ ENGINEERING_CONTRACT.md
+└─ .agents/rules/engineering-contract-router.md
 ```
 
-Read when the task changes product/contracts; do not force-load it for every typo.
-
-### Layer 4 — Task / Stage Prompt
-
-Contains only current outcome, evidence-backed defects, boundaries, and acceptance evidence.
-
----
-
-# 3. Vendor adapters are not physically identical
-
-## Codex
-
-```text
-<CODEX_HOME or ~/.codex>/AGENTS(.override).md
-~/.agents/skills/<skill>/SKILL.md
-```
-
-## Claude Code
-
-```text
-<CLAUDE_CONFIG_DIR or ~/.claude>/CLAUDE.md
-<ClaudeHome>/skills/<skill>/SKILL.md
-```
-
-## Antigravity IDE
-
-```text
-~/.gemini/GEMINI.md
-~/.gemini/config/skills/<skill>/SKILL.md
-workspace/.agents/rules/
-workspace/.agents/skills/<skill>/SKILL.md
-```
-
-## Antigravity CLI
-
-```text
-~/.gemini/GEMINI.md
-~/.gemini/antigravity-cli/skills/<skill>.md
-workspace/AGENTS.md or GEMINI.md
-workspace/.agents/skills/<name>.md
-```
-
-The CLI Skill layout is intentionally different from the IDE layout.
-
----
-
-# 4. Setup correctness is also evidence-driven
-
-```text
-Package Self-Test
-→ Native Windows Preflight
-→ Non-mutating Dry-Run
-→ Install
-→ Disk Verify
-→ Real Agent Loading Smoke
-```
-
-A file existing on disk is not proof that the Agent loaded it.
-
----
-
-# 5. No governance platform
-
-Toolkit remains:
-
-```text
-Markdown contracts
-+ three Skills
-+ small deterministic PowerShell setup/verify scripts
-```
-
-No daemon, database, policy server, registry service, or event bus.
+Always-on content stays concise.
+Detailed workflows live in Skills.
+Project semantics load on demand.

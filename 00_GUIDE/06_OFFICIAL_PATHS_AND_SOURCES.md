@@ -1,4 +1,4 @@
-# Official Path Sources — verified 2026-08-18
+# Official Path Sources — verified 2026-08-26
 
 This file records vendor documentation used for v1.2 adapters.
 
@@ -110,3 +110,7 @@ If a future product release disagrees with this file:
 1. verify official docs;
 2. update adapter + scripts;
 3. do not change the canonical engineering invariants unless the engineering principle itself changed.
+
+
+## v1.4 note
+Vendor instruction/Skill paths were rechecked on 2026-08-26. The six-layer model is Toolkit architecture, not a claim that vendors expose these layers natively.

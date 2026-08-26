@@ -76,3 +76,16 @@ Add something to Global Invariants only when it:
 - does not belong to a procedural Skill.
 
 Otherwise keep it in Project Contract, Skill reference, or Task Prompt.
+
+
+---
+
+# Machine Profile Maintenance
+
+工具/运行时变化后：
+
+```powershell
+$HOME\.agent-engineering\scripts\refresh-machine-profile.ps1
+```
+
+脚本只更新 managed discovery block，保留 User Policy。

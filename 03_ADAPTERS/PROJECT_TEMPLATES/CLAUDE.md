@@ -1,9 +1,6 @@
 @AGENTS.md
 
 # Claude Code Project Adapter
-
-Use `/contract-impact-check` before contract-changing work.
-
-Use `/stage-execution` for a complete engineering stage.
-
-Use `/independent-review` only when acting as an independent reviewer.
+AGENTS.md is the router. Do not duplicate project business semantics here.
+Use /contract-impact-check, /stage-execution, /independent-review as relevant.
+Read ENGINEERING_CONTRACT.md on demand for project semantic changes/review.

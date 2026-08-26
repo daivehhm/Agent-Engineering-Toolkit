@@ -4,6 +4,7 @@ param(
     [string]$ProjectRoot,
     [string]$InstallRoot = (Join-Path $HOME ".agent-engineering"),
     [string]$TestCommand = "<TEST_COMMAND>",
+    [string]$ContractVersion = "0.1.0",
     [switch]$IntegrateExisting,
     [switch]$IncludeCodexCompatibility,
     [switch]$Force
@@ -87,6 +88,7 @@ foreach ($rel in $items) {
             $text = $text.Replace("<PROJECT_NAME>", $projectName)
             $text = $text.Replace("<CURRENT_ROOT>", $ProjectRoot)
             $text = $text.Replace("<TEST_COMMAND>", $TestCommand)
+            $text = $text.Replace("<CONTRACT_VERSION>", $ContractVersion)
             Set-Content $dst $text -Encoding UTF8
             Write-Host "Created: $dst"
         }
@@ -96,15 +98,26 @@ foreach ($rel in $items) {
 if ($IntegrateExisting) {
     $agentBlock = @'
 <!-- AGENT-ENGINEERING-PROJECT:BEGIN -->
-## Agent Engineering Project Contract
+## Agent Engineering Project Router
 
-For scoring/selection/routing/state/schema/validator/gate/persistence or other product-semantic changes:
-- read `ENGINEERING_CONTRACT.md`
-- use `contract-impact-check` before editing
+Canonical project semantics live in `ENGINEERING_CONTRACT.md`.
+
+For product/business semantic changes:
+- read canonical contract;
+- use `contract-impact-check`.
+
+Before terminal/filesystem/network/GPU/long-runtime execution:
+- read `%USERPROFILE%\.agent-engineering\MACHINE_EXECUTION_PROFILE.md` if installed;
+- perform Stage capability preflight.
+
+Workspace default:
+- one active Builder writer per worktree;
+- Reviewer read-only by default.
 
 Use `stage-execution` for complete engineering stages.
-Use `independent-review` only for independent review.
-Do not mutate canonical evidence to satisfy a gate.
+Use `independent-review` for formal independent review.
+
+Do not duplicate business thresholds/state semantics in this adapter.
 <!-- AGENT-ENGINEERING-PROJECT:END -->
 '@
     $claudeBlock = @'

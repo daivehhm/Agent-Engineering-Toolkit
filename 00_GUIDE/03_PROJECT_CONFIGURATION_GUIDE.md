@@ -83,3 +83,17 @@ Remember:
 - Antigravity CLI workspace Skill: `.agents/skills/<name>.md`
 
 Do not try to force one physical Skill layout on all products.
+
+
+---
+
+# v1.4 Project Source of Truth
+
+ENGINEERING_CONTRACT.md 是默认项目语义唯一真源。
+AGENTS.md / CLAUDE.md / GEMINI.md 是路由器，不复制阈值/状态/验收语义。
+
+bootstrap-project supports:
+
+```powershell
+-ContractVersion "0.1.0"
+```

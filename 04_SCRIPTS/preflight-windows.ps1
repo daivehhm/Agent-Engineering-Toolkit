@@ -90,6 +90,8 @@ Status "HOME" $HOME
 Status "USERPROFILE" $env:USERPROFILE
 Status "CODEX_HOME effective" $codexHome
 Status "CLAUDE_CONFIG_DIR effective" $claudeHome
+$machineProfile = Join-Path (Join-Path $HOME ".agent-engineering") "MACHINE_EXECUTION_PROFILE.md"
+Status "Machine Execution Profile" $(if (Test-Path $machineProfile) { $machineProfile } else { "<not-installed>" })
 Status "Codex executable" (Get-CommandPath "codex")
 Status "Claude executable" (Get-CommandPath "claude")
 Status "Antigravity CLI executable (agy)" (Get-CommandPath "agy")

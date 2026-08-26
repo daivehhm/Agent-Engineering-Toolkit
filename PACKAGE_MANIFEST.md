@@ -1,8 +1,8 @@
 # Package Manifest
 
-Package: `Agent-Engineering-Toolkit-v1.3`
-Version: `1.3.0`
-Files excluding this manifest: `65`
+Package: `Agent-Engineering-Toolkit-v1.4`
+Version: `1.4.0`
+Files excluding this manifest: `77`
 
 No SHA/SHA256 manifest is used.
 
@@ -23,24 +23,33 @@ No SHA/SHA256 manifest is used.
 - `00_GUIDE/12_CAPABILITY_AND_PERMISSION_PREREQUISITES.md`
 - `00_GUIDE/13_USAGE_SCENARIOS_AND_DECISION_TREE.md`
 - `00_GUIDE/14_ROLES_LIFECYCLE_AND_SUCCESS_CRITERIA.md`
+- `00_GUIDE/15_SIX_LAYER_SCOPE_MODEL.md`
+- `00_GUIDE/16_CROSS_AGENT_EXECUTION_AND_REVIEW_PROTOCOL.md`
 - `00_OVERVIEW.md`
 - `00_START_HERE_FOR_ANY_AGENT.md`
 - `01_CANONICAL/01_AGENT_ENGINEERING_INVARIANTS.md`
 - `01_CANONICAL/02_CONTRACT_IMPACT_CHECK.md`
 - `01_CANONICAL/03_STAGE_EXECUTION_TEMPLATE.md`
 - `01_CANONICAL/04_INDEPENDENT_REVIEW_CHECKLIST.md`
+- `01_CANONICAL/CROSS_AGENT_EXECUTION_CONTRACT.md`
 - `01_CANONICAL/EVIDENCE_CONTRACT.md`
+- `01_CANONICAL/MACHINE_EXECUTION_PROFILE_TEMPLATE.md`
 - `01_CANONICAL/PROJECT_ENGINEERING_CONTRACT_TEMPLATE.md`
 - `01_CANONICAL/REVIEW_ZIP_STANDARD.md`
+- `01_CANONICAL/STAGE_BINDING_AND_PARAMETER_POLICY.md`
 - `01_CANONICAL/TEST_INTEGRITY_CONTRACT.md`
 - `02_SKILLS/contract-impact-check/.agent-engineering-managed`
 - `02_SKILLS/contract-impact-check/SKILL.md`
 - `02_SKILLS/contract-impact-check/references/CONTRACT_IMPACT_CHECK.md`
 - `02_SKILLS/independent-review/.agent-engineering-managed`
 - `02_SKILLS/independent-review/SKILL.md`
+- `02_SKILLS/independent-review/references/CROSS_AGENT_EXECUTION_CONTRACT.md`
 - `02_SKILLS/independent-review/references/INDEPENDENT_REVIEW_CHECKLIST.md`
+- `02_SKILLS/independent-review/references/STAGE_BINDING_AND_PARAMETER_POLICY.md`
 - `02_SKILLS/stage-execution/.agent-engineering-managed`
 - `02_SKILLS/stage-execution/SKILL.md`
+- `02_SKILLS/stage-execution/references/CROSS_AGENT_EXECUTION_CONTRACT.md`
+- `02_SKILLS/stage-execution/references/STAGE_BINDING_AND_PARAMETER_POLICY.md`
 - `02_SKILLS/stage-execution/references/STAGE_EXECUTION_TEMPLATE.md`
 - `03_ADAPTERS/ANTIGRAVITY_GLOBAL_GEMINI_TEMPLATE.md`
 - `03_ADAPTERS/CLAUDE_GLOBAL_CLAUDE_TEMPLATE.md`
@@ -56,11 +65,13 @@ No SHA/SHA256 manifest is used.
 - `04_SCRIPTS/bootstrap-project.ps1`
 - `04_SCRIPTS/install-agent-engineering.ps1`
 - `04_SCRIPTS/preflight-windows.ps1`
+- `04_SCRIPTS/refresh-machine-profile.ps1`
 - `04_SCRIPTS/self-test-toolkit.ps1`
 - `04_SCRIPTS/sync-agent-engineering.ps1`
 - `04_SCRIPTS/uninstall-agent-engineering.ps1`
 - `04_SCRIPTS/verify-agent-engineering.ps1`
 - `05_EXAMPLES/ANY_AGENT_WINDOWS_SETUP_PROMPT.md`
+- `05_EXAMPLES/MACHINE_EXECUTION_PROFILE_WINDOWS_EXAMPLE.md`
 - `05_EXAMPLES/REVIEW_PROMPT_EXAMPLE.md`
 - `05_EXAMPLES/STAGE_PROMPT_EXAMPLE.md`
 - `05_EXAMPLES/VIDEO_CLIPPING_ENGINEERING_CONTRACT_EXAMPLE.md`
@@ -68,6 +79,7 @@ No SHA/SHA256 manifest is used.
 - `06_VALIDATION/PACKAGE_SELF_REVIEW_RESULT.md`
 - `06_VALIDATION/STATIC_VALIDATION_REPORT.md`
 - `06_VALIDATION/V1_3_CONTENT_COMPLETENESS_REVIEW.md`
+- `06_VALIDATION/V1_4_DEEP_SOCRATIC_REVIEW.md`
 - `06_VALIDATION/ZERO_CONTEXT_AGENT_CONFIGURATION_ASSESSMENT.md`
 - `CHANGELOG.md`
 - `INSTALL_CHECKLIST.md`

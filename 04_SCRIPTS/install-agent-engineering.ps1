@@ -147,6 +147,31 @@ $syncScript = if ($usePackageCanonical -and $WhatIfPreference) {
 if (-not (Test-Path $canonical)) { throw "Canonical invariants missing: $canonical" }
 if (-not (Test-Path $syncScript)) { throw "Sync script missing: $syncScript" }
 
+$machineProfile = Join-Path $InstallRoot "MACHINE_EXECUTION_PROFILE.md"
+$machineTemplate = if ($usePackageCanonical -and $WhatIfPreference) {
+    Join-Path $ToolkitSourceRoot "01_CANONICAL\MACHINE_EXECUTION_PROFILE_TEMPLATE.md"
+} else {
+    Join-Path $InstallRoot "canonical\MACHINE_EXECUTION_PROFILE_TEMPLATE.md"
+}
+$refreshMachineScript = if ($usePackageCanonical -and $WhatIfPreference) {
+    Join-Path $ToolkitSourceRoot "04_SCRIPTS\refresh-machine-profile.ps1"
+} else {
+    Join-Path $InstallRoot "scripts\refresh-machine-profile.ps1"
+}
+
+if (-not (Test-Path $machineProfile)) {
+    if (-not (Test-Path $machineTemplate)) { throw "Machine profile template missing: $machineTemplate" }
+    if ($PSCmdlet.ShouldProcess($machineProfile, "Create machine execution profile")) {
+        if (-not $WhatIfPreference) { Copy-Item $machineTemplate $machineProfile -Force }
+    }
+}
+
+if (-not $WhatIfPreference) {
+    if (-not (Test-Path $refreshMachineScript)) { throw "Machine profile refresh script missing: $refreshMachineScript" }
+    & $refreshMachineScript -InstallRoot $InstallRoot
+}
+
+
 # Sync Skills before touching global instruction adapters. Sync performs a conflict prescan.
 & $syncScript -InstallRoot $InstallRoot -SkillSourceRoot $skillSource `
     -ForceManagedSkillOverwrite:$ForceManagedSkillOverwrite -WhatIf:$WhatIfPreference
@@ -170,6 +195,10 @@ $codexBlock = @(
     "",
     $canonicalText.Trim(),
     "",
+    "Machine Execution Profile: $installedMachineProfilePath",
+    "Before terminal/filesystem/process/network/GPU/long-runtime work, read it and perform Stage capability preflight.",
+    "Machine availability is not proof of current Agent access.",
+    "",
     "Reusable skills:",
     "- contract-impact-check",
     "- stage-execution",
@@ -179,9 +208,11 @@ $codexBlock = @(
 
 # When installing for real, imports point to installed canonical path.
 $installedCanonicalPath = (Join-Path $InstallRoot "01_AGENT_ENGINEERING_INVARIANTS.md").Replace("\","/")
+$installedMachineProfilePath = (Join-Path $InstallRoot "MACHINE_EXECUTION_PROFILE.md").Replace("\","/")
 $claudeBlock = @(
     "<!-- AGENT-ENGINEERING-TOOLKIT:BEGIN -->",
     "@$installedCanonicalPath",
+    "@$installedMachineProfilePath",
     "",
     "Toolkit-Version: $sourceVersion",
     "",
@@ -194,6 +225,7 @@ $claudeBlock = @(
 $geminiBlock = @(
     "<!-- AGENT-ENGINEERING-TOOLKIT:BEGIN -->",
     "@$installedCanonicalPath",
+    "@$installedMachineProfilePath",
     "",
     "Toolkit-Version: $sourceVersion",
     "",
