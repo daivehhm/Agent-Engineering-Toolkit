@@ -2,7 +2,7 @@
 
 Package: `Agent-Engineering-Toolkit-v1.5`
 Version: `1.5.0`
-Files excluding this manifest: `89`
+Files excluding this manifest: `90`
 
 No SHA/SHA256 manifest is used.
 
@@ -95,5 +95,6 @@ No SHA/SHA256 manifest is used.
 - `CHANGELOG.md`
 - `FUTURE_CANDIDATES.md`
 - `INSTALL_CHECKLIST.md`
+- `LICENSE`
 - `README.md`
 - `VERSION`

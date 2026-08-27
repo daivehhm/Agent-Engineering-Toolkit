@@ -1,8 +1,12 @@
 # Agent Engineering Toolkit v1.5
 
-AET 是面向 Codex / Claude Code / Antigravity 等本地 AI Coding Agent 的轻量工程执行、证据约束与独立 Review Toolkit。
+Agent Engineering Toolkit（AET）是一套面向 Codex / Claude Code / Antigravity 等本地 AI Coding Agent 的轻量工程执行、证据约束与独立 Review Toolkit。
+
+Agent Engineering Toolkit (AET) is a lightweight engineering execution, evidence-control, and independent-review toolkit for local AI coding Agents such as Codex, Claude Code, and Antigravity.
 
 核心问题不是“Agent 会不会写代码”，而是：
+
+The core question is not whether an Agent can write code, but whether:
 
 ```text
 执行是否真实
@@ -12,43 +16,37 @@ AET 是面向 Codex / Claude Code / Antigravity 等本地 AI Coding Agent 的轻
 不同 Agent 是否遵守同一项目合同
 ```
 
-## 通俗理解
+```text
+execution is real
+changes are controlled
+evidence is trustworthy
+completion claims are verifiable
+different Agents follow the same project contract
+```
 
-这东西是给那些“雇了 AI 程序员给自己打工”的人用的。
+## 通俗理解 / Plain Explanation
 
-比如，你是一个程序员，现在你让 Claude、Codex 这些 AI 来帮你写代码、改代码。这时候，你就是老板，AI 就是你的“码农实习生”。
+这东西是给那些“雇了 AI 程序员给自己打工”的人用的。比如，你是一个程序员，现在你让 Claude、Codex 这些 AI 来帮你写代码、改代码。这时候，你就是老板，AI 就是你的“码农实习生”。这个工具包，就是给老板（程序员）和 AI 实习生之间定的一套“工作纪律手册”。
 
-这个工具包，就是给老板（程序员）和 AI 实习生之间定的一套“工作纪律手册”。
+This is for people who have effectively hired AI programmers to work for them. For example, if you are a developer asking Claude, Codex, or another coding Agent to write and modify code, you are the boss and the AI is your coding intern. This toolkit is the work-discipline manual between the developer and that AI intern.
 
-### 它到底要解决什么烦心事？
+AET 主要解决三个烦心事：AI 给你“造假账”，说测试通过但实际没跑；AI 给你“乱拆家”，修一个小 bug 却偷偷改了底层结构；AI “自己说了算”，改完只说搞定了，过程不可查。
 
-想象一下，如果你不管着点 AI，它会干出下面这些“坑爹”事：
+AET mainly addresses three pain points: the AI fakes the books by claiming tests passed without running them; the AI changes the house by touching architecture or unrelated code while fixing a small bug; and the AI acts as its own judge by saying “done” without leaving a traceable process.
 
-1. AI 给你“造假账”（只管说，不管做）
+所以，AET 要求 AI 拿出“实锤证据”，例如 exit code、运行记录和测试结果；要求 AI 遵守“施工红线”，只改允许改的地方；还要求 AI 留下“流水账”，让关键操作、失败、重跑和结论都能被复核。
 
-AI 跟你说：“老板，代码写完了，测试全通过了！”
+That is why AET requires hard evidence such as exit codes, run logs, and test results; clear work boundaries so the Agent touches only what is allowed; and an audit trail so key commands, failures, reruns, and conclusions can be reviewed.
 
-结果你一去检查，发现它压根没跑过测试，甚至为了省事，自己编造了一个“测试通过”的假记录。这工具就是逼着 AI 必须拿出“实锤证据”，比如测试失败的截图、运行记录，不能光靠一张嘴糊弄你。
+总结成一句话：这个工具包，就是让你当 AI 的“严苛监工”。它确保你雇的 AI 程序员不撒谎、不乱改、不留坑，所有操作都有据可查。
 
-2. AI 给你“乱拆家”（改哪算哪，没有边界）
+In one sentence: this toolkit helps you act as a strict supervisor for AI coding Agents. It keeps them from lying, making uncontrolled changes, or leaving hidden problems behind, while making important work auditable.
 
-你让它修一下卫生间的灯，结果它顺手把厨房的承重墙给砸了。
+## 六层架构 / Six-Layer Architecture
 
-写代码也是这样，AI 为了修一个小 bug，可能偷偷把你整个项目的底层结构给改了，你还蒙在鼓里。这工具就是提前给 AI 画个“施工红线”，明确告诉它：只能动这里，其他地方碰都不准碰。
+AET 采用六层架构，把机器能力、全局纪律、Agent 适配、项目合同、阶段执行和独立 Review 分开，避免把所有规则混成一团。
 
-3. AI “自己说了算”（你没法查岗）
-
-AI 噼里啪啦改了一大堆，最后给你一句“搞定了”。
-
-你根本不知道它中间执行了什么操作，过程全黑盒。这工具要求 AI 必须“记流水账”，每一步干了啥、执行了什么命令、成功还是失败，都得清清楚楚写下来，方便你随时“查监控”。
-
-总结成一句话：
-
-> 这个工具包，就是让你当 AI 的“严苛监工”。
->
-> 它确保你雇的 AI 程序员不撒谎、不乱改、不留坑，所有操作都有据可查。如果你觉得不对劲，还能随时喊停，亲自“复核”它的作业，避免了 AI 把你的项目搞成一团乱麻，最后还得你自己熬夜去擦屁股。
-
-## 六层架构
+AET uses a six-layer architecture that separates machine capability, global discipline, Agent adaptation, project contracts, stage execution, and independent review instead of mixing all rules into one place.
 
 ```text
 L0  Machine Execution Profile
@@ -59,7 +57,11 @@ L4  Stage Execution Contract
 L5  Independent Review / Human Gate
 ```
 
-## 三个程序性 Skill
+## 三个程序性 Skill / Three Procedural Skills
+
+AET 仍然只有三个程序性 Skill：`contract-impact-check`、`stage-execution` 和 `independent-review`。它们负责在语义变化、阶段执行和独立复核时提供最小但硬的流程约束。
+
+AET still has only three procedural Skills: `contract-impact-check`, `stage-execution`, and `independent-review`. They provide minimal but strict process constraints for semantic changes, stage execution, and independent review.
 
 ```text
 contract-impact-check
@@ -67,11 +69,11 @@ stage-execution
 independent-review
 ```
 
-仍然只有三个 Skill。
-
 ## v1.5 — Evidence & Consistency Closure
 
-### Work Class
+v1.5 引入 Work Class，由工作性质决定最低 Evidence/Review 要求。Work Class 不是 `lenient / standard / strict`，而是 `SMALL_CHANGE`、`STAGE_WORK` 和 `FORMAL_ACCEPTANCE`。
+
+v1.5 introduces Work Class, where the nature of the work determines the minimum evidence and review requirements. Work Class is not `lenient / standard / strict`; it is `SMALL_CHANGE`, `STAGE_WORK`, and `FORMAL_ACCEPTANCE`.
 
 ```text
 SMALL_CHANGE
@@ -79,24 +81,35 @@ STAGE_WORK
 FORMAL_ACCEPTANCE
 ```
 
-不是 `lenient / standard / strict`。Work Class 由工作性质决定最低 Evidence/Review 要求。
+Critical Command Evidence 要求正式 Stage 只记录关键测试、构建、真实运行、验证、迁移和 benchmark 命令的结构化证据；必须保存 exit code，要求 secret redaction，并且默认不捕获全部终端历史或完整环境变量。
 
-### Critical Command Evidence
-正式 Stage 记录关键测试、构建、真实运行、验证、迁移、benchmark 命令的结构化证据，不捕获全部终端历史。要求保存 exit code，并默认进行 secret redaction。
+Critical Command Evidence requires formal stages to record structured evidence only for key test, build, real-runtime, validation, migration, and benchmark commands. It must preserve exit code, requires secret redaction, and does not capture the full terminal history or full environment by default.
 
-### Minimal Stage Outcome
-STAGE_WORK / FORMAL_ACCEPTANCE 生成 `stage_outcome.json`，最小记录 Unit/Path/Runtime、Review 轮数、Blocker、false sign-off 与 Human Gate 状态。先积累真实数据，不建设 Evaluation Platform。
+Minimal Stage Outcome 要求 `STAGE_WORK` / `FORMAL_ACCEPTANCE` 生成 `stage_outcome.json`，最小记录 Unit/Path/Runtime、Review 轮数、Blocker、false sign-off 与 Human Gate 状态。它是派生摘要，不能覆盖真实测试和运行证据。
 
-### Documentation Consistency
-Active 文档只描述当前版本。历史变化只进入 `CHANGELOG.md`，不再采用“旧版正文 + 新版 addendum”。
+Minimal Stage Outcome requires `STAGE_WORK` / `FORMAL_ACCEPTANCE` to produce `stage_outcome.json`, minimally recording Unit/Path/Runtime, review rounds, blockers, false sign-off, and Human Gate status. It is a derived summary and must not override real test or runtime evidence.
 
-## AET 不是什么
+Documentation Consistency 要求 active 文档只描述当前版本，历史变化进入 `CHANGELOG.md`，不再采用“旧版正文 + 新版 addendum”的写法。
 
-当前不建设：MCP Server、Receipt Server、Evaluation Platform、Dashboard、Agent Manager、Policy Engine、centralized lock、RBAC/Compliance 平台。
+Documentation Consistency means active documents describe only the current version, while historical changes go into `CHANGELOG.md`. The project no longer uses an “old body plus new addendum” style.
 
-AET 支持 auditability-oriented engineering，但不声称满足企业合规认证。
+## AET 不是什么 / What AET Is Not
 
-## 安装
+当前 AET 不建设 MCP Server、Receipt Server、Evaluation Platform、Dashboard、Agent Manager、Policy Engine、centralized lock 或 RBAC/Compliance 平台。AET 支持 auditability-oriented engineering，但不声称满足企业合规认证。
+
+AET currently does not build an MCP Server, Receipt Server, Evaluation Platform, Dashboard, Agent Manager, Policy Engine, centralized lock, or RBAC/Compliance platform. AET supports auditability-oriented engineering, but it does not claim enterprise compliance certification.
+
+## 目录结构 / Directory Layout
+
+仓库目录包括 `00_GUIDE`、`01_CANONICAL`、`02_SKILLS`、`03_ADAPTERS`、`04_SCRIPTS`、`05_EXAMPLES` 和 `06_VALIDATION`。其中 `01_CANONICAL` 是规范源，`02_SKILLS` 是三个程序性 Skill，`04_SCRIPTS` 是 Windows 安装、同步、预检和验证脚本。
+
+The repository contains `00_GUIDE`, `01_CANONICAL`, `02_SKILLS`, `03_ADAPTERS`, `04_SCRIPTS`, `05_EXAMPLES`, and `06_VALIDATION`. `01_CANONICAL` contains canonical contracts, `02_SKILLS` contains the three procedural Skills, and `04_SCRIPTS` contains Windows install, sync, preflight, and verification scripts.
+
+## 安装 / Installation
+
+安装建议先自检，再做 Windows 预检，然后执行 `-WhatIf` 预览，确认无误后正式安装，最后运行验证脚本。
+
+The recommended installation flow is: run the self-test, run the Windows preflight, run the `-WhatIf` preview, perform the real install after checking the preview, and then run verification.
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\04_SCRIPTS\self-test-toolkit.ps1
@@ -108,8 +121,16 @@ powershell -ExecutionPolicy Bypass -File $HOME\.agent-engineering\scripts\verify
 
 最后执行 `00_GUIDE/09_AGENT_LOADING_SMOKE_TEST.md`。文件存在不等于 Runtime Loading 成功。
 
-## 成功标准
+Finally, run `00_GUIDE/09_AGENT_LOADING_SMOKE_TEST.md`. File existence does not prove Runtime Loading success.
 
-配置成功：`SETUP_VERIFIED`。
+## 成功标准 / Success Criteria
 
-工程效果长期观察：false PASS、Review 推翻率、返工轮数、Path failure、一次 Stage 完成率、Human Gate 前机器错误。
+配置成功的标志是 `SETUP_VERIFIED`。工程效果需要长期观察，包括 false PASS、Review 推翻率、返工轮数、Path failure、一次 Stage 完成率和 Human Gate 前机器错误。
+
+Configuration success is marked by `SETUP_VERIFIED`. Engineering effectiveness should be observed over time through false PASS, review overturn rate, rework rounds, path failure, one-pass Stage completion rate, and machine errors before Human Gate.
+
+## 许可证 / License
+
+本项目使用 MIT License。详见 `LICENSE`。
+
+This project is released under the MIT License. See `LICENSE`.
