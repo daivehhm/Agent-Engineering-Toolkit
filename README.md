@@ -1,4 +1,4 @@
-# Agent Engineering Toolkit v1.6.2-localfix2
+# Agent Engineering Toolkit v1.6.3
 
 Agent Engineering Toolkit（AET）是一套面向 Codex / Claude Code / Antigravity 等本地 AI Coding Agent 的轻量工程执行、证据约束与独立 Review Toolkit。
 
@@ -75,6 +75,7 @@ independent-review
 ```
 
 
+## v1.5 — 证据与一致性闭环
 ## v1.5 — Evidence & Consistency Closure
 
 v1.5 引入 Work Class，由工作性质决定最低 Evidence/Review 要求。Work Class 不是 `lenient / standard / strict`，而是 `SMALL_CHANGE`、`STAGE_WORK` 和 `FORMAL_ACCEPTANCE`。
@@ -104,6 +105,7 @@ Documentation Consistency 要求 active 文档只描述当前版本，历史变�
 *Documentation Consistency means active documents describe only the current version, while historical changes go into `CHANGELOG.md`. The project no longer uses an “old body plus new addendum” style.*
 
 
+## v1.6.x — 安全与运行期验证增量
 ## v1.6.x — Safety & Runtime Verification Increment
 
 在保持六层架构和三个程序性 Skill 不变的前提下，v1.6.x 增加文件系统搜索安全边界 `FS_SEARCH_SAFETY_V1`、Toolkit-managed Skill 保护、Runtime Loading 与静态配置分离，以及 Stage Review ZIP 完整性要求。详细历史变更见 `CHANGELOG.md`。

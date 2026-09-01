@@ -1,7 +1,7 @@
 # Codex Global Engineering Defaults
 
 <!-- AGENT-ENGINEERING-TOOLKIT:BEGIN -->
-Toolkit-Version: 1.6.1
+Toolkit-Version: 1.6.3
 
 Canonical Global Invariants:
 `<USERPROFILE_FORWARD>/.agent-engineering/01_AGENT_ENGINEERING_INVARIANTS.md`

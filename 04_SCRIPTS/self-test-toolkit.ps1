@@ -25,7 +25,7 @@ foreach ($r in $required) {
 }
 
 $ver = (Get-Content (Join-Path $ToolkitRoot 'VERSION') -Raw -Encoding UTF8).Trim()
-if ($ver -eq '1.6.1') { Pass 'VERSION 1.6.1' } else { Fail "Unexpected VERSION $ver" }
+if ($ver -eq '1.6.3') { Pass 'VERSION 1.6.3' } else { Fail "Unexpected VERSION $ver" }
 
 $inv = Get-Content (Join-Path $ToolkitRoot '01_CANONICAL\01_AGENT_ENGINEERING_INVARIANTS.md') -Raw -Encoding UTF8
 if ($inv.Contains('FS_SEARCH_SAFETY_V1')) { Pass 'FS_SEARCH_SAFETY_V1 canonical' } else { Fail 'Filesystem safety policy missing' }

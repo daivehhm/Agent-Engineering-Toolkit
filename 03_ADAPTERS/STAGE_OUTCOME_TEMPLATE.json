@@ -2,7 +2,7 @@
   "stage_id": "<id>",
   "goal": "<verifiable outcome>",
   "baseline": "<source baseline>",
-  "toolkit_version": "1.6.1",
+  "toolkit_version": "1.6.3",
   "implementation_status": "<status>",
   "validation": [],
   "blocking": [],
