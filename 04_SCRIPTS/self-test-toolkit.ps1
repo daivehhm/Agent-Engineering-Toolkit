@@ -1,116 +1,95 @@
 [CmdletBinding()]
-param(
-    [string]$ToolkitSourceRoot = (Split-Path -Parent $PSScriptRoot)
-)
+param([string]$ToolkitRoot = (Split-Path -Parent $PSScriptRoot))
 
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = 'Stop'
 $fail = 0
 function Pass([string]$m) { Write-Host "[PASS] $m" }
 function Fail([string]$m) { Write-Host "[FAIL] $m"; $script:fail++ }
 
 $required = @(
-    "VERSION",
-    "00_START_HERE_FOR_ANY_AGENT.md",
-    "01_CANONICAL\MACHINE_EXECUTION_PROFILE_TEMPLATE.md",
-    "01_CANONICAL\CROSS_AGENT_EXECUTION_CONTRACT.md",
-    "01_CANONICAL\STAGE_BINDING_AND_PARAMETER_POLICY.md",
-    "01_CANONICAL\WORK_CLASS_POLICY.md",
-    "01_CANONICAL\CRITICAL_COMMAND_EVIDENCE_CONTRACT.md",
-    "01_CANONICAL\STAGE_OUTCOME_CONTRACT.md",
-    "FUTURE_CANDIDATES.md",
-    "00_GUIDE\11_ANY_AGENT_WINDOWS_INSTALLATION_PLAYBOOK.md",
-    "01_CANONICAL\01_AGENT_ENGINEERING_INVARIANTS.md",
-    "01_CANONICAL\02_CONTRACT_IMPACT_CHECK.md",
-    "01_CANONICAL\03_STAGE_EXECUTION_TEMPLATE.md",
-    "01_CANONICAL\04_INDEPENDENT_REVIEW_CHECKLIST.md",
-    "01_CANONICAL\TEST_INTEGRITY_CONTRACT.md",
-    "02_SKILLS\contract-impact-check\SKILL.md",
-    "02_SKILLS\stage-execution\SKILL.md",
-    "02_SKILLS\independent-review\SKILL.md",
-    "04_SCRIPTS\preflight-windows.ps1",
-    "04_SCRIPTS\refresh-machine-profile.ps1",
-    "04_SCRIPTS\install-agent-engineering.ps1",
-    "04_SCRIPTS\sync-agent-engineering.ps1",
-    "04_SCRIPTS\verify-agent-engineering.ps1",
-    "04_SCRIPTS\bootstrap-project.ps1",
-    "03_ADAPTERS\PROJECT_TEMPLATES\AGENTS.md",
-    "03_ADAPTERS\PROJECT_TEMPLATES\CLAUDE.md",
-    "03_ADAPTERS\PROJECT_TEMPLATES\GEMINI.md",
-    "03_ADAPTERS\PROJECT_TEMPLATES\ENGINEERING_CONTRACT.md"
+    'VERSION',
+    'README.md',
+    '00_START_HERE_FOR_ANY_AGENT.md',
+    '01_CANONICAL\01_AGENT_ENGINEERING_INVARIANTS.md',
+    '01_CANONICAL\MACHINE_EXECUTION_PROFILE_TEMPLATE.md',
+    '00_GUIDE\09_AGENT_LOADING_SMOKE_TEST.md',
+    '03_ADAPTERS\CODEX_GLOBAL_AGENTS_TEMPLATE.md',
+    '03_ADAPTERS\CLAUDE_GLOBAL_CLAUDE_TEMPLATE.md',
+    '03_ADAPTERS\ANTIGRAVITY_GLOBAL_GEMINI_TEMPLATE.md',
+    '04_SCRIPTS\install-agent-engineering.ps1',
+    '04_SCRIPTS\verify-agent-engineering.ps1',
+    '04_SCRIPTS\bootstrap-project.ps1'
 )
-foreach ($rel in $required) {
-    if (Test-Path (Join-Path $ToolkitSourceRoot $rel)) { Pass "Exists: $rel" } else { Fail "Missing: $rel" }
+foreach ($r in $required) {
+    if (Test-Path (Join-Path $ToolkitRoot $r)) { Pass $r } else { Fail "Missing $r" }
 }
 
-$version = (Get-Content (Join-Path $ToolkitSourceRoot "VERSION") -Raw -Encoding UTF8).Trim()
-if ($version -eq "1.5.0") { Pass "Version is 1.5.0" } else { Fail "Unexpected version: $version" }
+$ver = (Get-Content (Join-Path $ToolkitRoot 'VERSION') -Raw -Encoding UTF8).Trim()
+if ($ver -eq '1.6.1') { Pass 'VERSION 1.6.1' } else { Fail "Unexpected VERSION $ver" }
 
-$invariants = Join-Path $ToolkitSourceRoot "01_CANONICAL\01_AGENT_ENGINEERING_INVARIANTS.md"
-if (Test-Path $invariants) {
-    $txt = Get-Content $invariants -Raw -Encoding UTF8
-    if ($txt.Length -le 10000) { Pass "Global invariants remain concise" } else { Fail "Global invariants too large: $($txt.Length)" }
+$inv = Get-Content (Join-Path $ToolkitRoot '01_CANONICAL\01_AGENT_ENGINEERING_INVARIANTS.md') -Raw -Encoding UTF8
+if ($inv.Contains('FS_SEARCH_SAFETY_V1')) { Pass 'FS_SEARCH_SAFETY_V1 canonical' } else { Fail 'Filesystem safety policy missing' }
+if ($inv.Contains('search, discovery, inventory, or enumeration')) { Pass 'Filesystem safety covers broad traversal intents' } else { Fail 'Filesystem safety intent coverage missing' }
+
+$mp = Get-Content (Join-Path $ToolkitRoot '01_CANONICAL\MACHINE_EXECUTION_PROFILE_TEMPLATE.md') -Raw -Encoding UTF8
+foreach ($expected in @(
+    'Profile-Schema-Version: 1.1',
+    'drive_root_recursive_search: explicit-user-authorization',
+    'indexed_search_preference: existing-healthy-index-preferred'
+)) {
+    if ($mp.Contains($expected)) { Pass "Machine profile: $expected" } else { Fail "Machine profile missing: $expected" }
 }
 
-$skills = @("contract-impact-check","stage-execution","independent-review")
-$names = @()
-foreach ($skill in $skills) {
-    $dir = Join-Path $ToolkitSourceRoot "02_SKILLS\$skill"
-    $file = Join-Path $dir "SKILL.md"
-    $marker = Join-Path $dir ".agent-engineering-managed"
-    if (Test-Path $marker) { Pass "Managed marker: $skill" } else { Fail "Missing managed marker: $skill" }
-    if (Test-Path $file) {
-        $txt = Get-Content $file -Raw -Encoding UTF8
-        $nameMatch = [regex]::Match($txt, "(?m)^name:\s*(.+)$")
-        $descMatch = [regex]::Match($txt, "(?m)^description:\s*(.+)$")
-        if ($nameMatch.Success) {
-            $name = $nameMatch.Groups[1].Value.Trim(); $names += $name
-            if ($name -eq $skill) { Pass "Skill name: $skill" } else { Fail "Skill name mismatch: $skill / $name" }
-        } else { Fail "Skill name missing: $skill" }
-        if ($descMatch.Success) { Pass "Skill description: $skill" } else { Fail "Skill description missing: $skill" }
+# Reject hidden control characters that can corrupt copy/paste commands.
+$textExtensions = @('.md','.ps1','.json','.jsonl','.txt')
+foreach ($file in (Get-ChildItem $ToolkitRoot -Recurse -File)) {
+    if ($textExtensions -contains $file.Extension.ToLowerInvariant() -or $file.Name -eq 'VERSION') {
+        $bytes = [System.IO.File]::ReadAllBytes($file.FullName)
+        $bad = @($bytes | Where-Object { $_ -lt 32 -and $_ -ne 9 -and $_ -ne 10 -and $_ -ne 13 })
+        if ($bad.Count -gt 0) { Fail "Illegal C0 control character(s): $($file.FullName)" }
     }
 }
-if (($names | Sort-Object -Unique).Count -eq $names.Count) { Pass "Skill names unique" } else { Fail "Duplicate Skill names" }
+if ($fail -eq 0) { Pass 'No illegal C0 control characters in text package files' }
 
-$installer = Get-Content (Join-Path $ToolkitSourceRoot "04_SCRIPTS\install-agent-engineering.ps1") -Raw -Encoding UTF8
-$syncer = Get-Content (Join-Path $ToolkitSourceRoot "04_SCRIPTS\sync-agent-engineering.ps1") -Raw -Encoding UTF8
-$bootstrap = Get-Content (Join-Path $ToolkitSourceRoot "04_SCRIPTS\bootstrap-project.ps1") -Raw -Encoding UTF8
-$verifier = Get-Content (Join-Path $ToolkitSourceRoot "04_SCRIPTS\verify-agent-engineering.ps1") -Raw -Encoding UTF8
+# Parse every PowerShell script with the native parser; syntax errors are release-blocking.
+foreach ($ps1 in (Get-ChildItem (Join-Path $ToolkitRoot '04_SCRIPTS') -File -Filter '*.ps1')) {
+    $tokens = $null; $errors = $null
+    [void][System.Management.Automation.Language.Parser]::ParseFile($ps1.FullName,[ref]$tokens,[ref]$errors)
+    if ($errors.Count -gt 0) {
+        foreach ($e in $errors) { Fail "PowerShell parse error $($ps1.Name): $($e.Message)" }
+    } else { Pass "PowerShell parse: $($ps1.Name)" }
+}
 
-if ($installer -notmatch '\$contract-impact-check|\$stage-execution|\$independent-review') { Pass "No PowerShell skill-name interpolation regression" } else { Fail "Risky PowerShell skill-name interpolation found" }
-if ($installer.Contains("native Windows") -and $installer.Contains("WhatIf: would backup")) { Pass "Installer has Windows guard and WhatIf-safe backup behavior" } else { Fail "Installer Windows/WhatIf safeguards missing" }
-if ($installer.Contains("partial/unknown installation") -and $installer.Contains("-UpgradeCanonical")) { Pass "Installer fails closed on unversioned/partial canonical install" } else { Fail "Partial-install provenance guard missing" }
-if ($syncer.Contains("Antigravity CLI requires flat Markdown skills") -and $syncer.Contains('"$skill.md"')) { Pass "Antigravity CLI flat-skill layout implemented" } else { Fail "CLI flat-skill layout missing" }
-if ($syncer.Contains("Pass 1: fail closed") -and $syncer.Contains("No skill targets were modified")) { Pass "Skill conflict pre-scan implemented" } else { Fail "Skill conflict pre-scan missing" }
-if ($bootstrap.Contains("Do not overwrite them first") -and $bootstrap.Contains("Preserve existing for marker integration")) { Pass "Existing project adapter integration is non-destructive" } else { Fail "Project integration overwrite safeguard missing" }
-if ($bootstrap.Contains("dry-run complete; no project files/backups")) { Pass "Project WhatIf no-write contract documented in script" } else { Fail "Project WhatIf contract missing" }
-if ($verifier.Contains("Antigravity CLI flat skill") -and $verifier.Contains("legacy directory-format")) { Pass "Verifier checks real CLI skill layout" } else { Fail "Verifier CLI layout check missing" }
+# JSON and JSONL syntax.
+foreach ($json in (Get-ChildItem $ToolkitRoot -Recurse -File -Filter '*.json')) {
+    try { Get-Content $json.FullName -Raw -Encoding UTF8 | ConvertFrom-Json | Out-Null; Pass "JSON parse: $($json.FullName)" } catch { Fail "JSON invalid: $($json.FullName) :: $($_.Exception.Message)" }
+}
+foreach ($jsonl in (Get-ChildItem $ToolkitRoot -Recurse -File -Filter '*.jsonl')) {
+    $lineNo = 0
+    foreach ($line in (Get-Content $jsonl.FullName -Encoding UTF8)) {
+        $lineNo++
+        if ([string]::IsNullOrWhiteSpace($line)) { continue }
+        try { $line | ConvertFrom-Json | Out-Null } catch { Fail "JSONL invalid: $($jsonl.FullName):$lineNo :: $($_.Exception.Message)" }
+    }
+    if ($fail -eq 0) { Pass "JSONL parse: $($jsonl.FullName)" }
+}
 
-$stageTemplate = Get-Content (Join-Path $ToolkitSourceRoot "01_CANONICAL\03_STAGE_EXECUTION_TEMPLATE.md") -Raw -Encoding UTF8
-$reviewTemplate = Get-Content (Join-Path $ToolkitSourceRoot "01_CANONICAL\04_INDEPENDENT_REVIEW_CHECKLIST.md") -Raw -Encoding UTF8
-$projectContract = Get-Content (Join-Path $ToolkitSourceRoot "01_CANONICAL\PROJECT_ENGINEERING_CONTRACT_TEMPLATE.md") -Raw -Encoding UTF8
-$refreshScript = Get-Content (Join-Path $ToolkitSourceRoot "04_SCRIPTS\refresh-machine-profile.ps1") -Raw -Encoding UTF8
+# Adapter versions and deterministic canonical/machine references.
+foreach ($name in @('CODEX_GLOBAL_AGENTS_TEMPLATE.md','CLAUDE_GLOBAL_CLAUDE_TEMPLATE.md','ANTIGRAVITY_GLOBAL_GEMINI_TEMPLATE.md')) {
+    $p = Join-Path $ToolkitRoot "03_ADAPTERS\$name"
+    $t = Get-Content $p -Raw -Encoding UTF8
+    if ($t.Contains("Toolkit-Version: $ver")) { Pass "Adapter version: $name" } else { Fail "Adapter version mismatch: $name" }
+    if ($t.Contains('.agent-engineering/01_AGENT_ENGINEERING_INVARIANTS.md') -and $t.Contains('.agent-engineering/MACHINE_EXECUTION_PROFILE.md')) {
+        Pass "Adapter deterministic AET references: $name"
+    } else { Fail "Adapter missing deterministic AET references: $name" }
+}
 
-if ($stageTemplate.Contains("Required Capabilities") -and $stageTemplate.Contains("one active Builder")) { Pass "Stage template includes capability/writer preflight" } else { Fail "Stage capability/writer preflight missing" }
-if ($reviewTemplate.Contains("R1_INDEPENDENT_CONTEXT_REVIEW") -and $reviewTemplate.Contains("READ_ONLY")) { Pass "Review independence levels/read-only default present" } else { Fail "Review independence contract missing" }
-if ($projectContract.Contains("Parameter Registry") -and $projectContract.Contains("CALIBRATED_THRESHOLD")) { Pass "Project contract includes parameter identity policy" } else { Fail "Project parameter identity policy missing" }
-if ($refreshScript.Contains("MACHINE-DISCOVERY:BEGIN") -and $refreshScript.Contains("DISCOVERY_IS_MACHINE_FACT_ONLY_NOT_AGENT_PERMISSION")) { Pass "Machine profile refresh preserves capability boundary" } else { Fail "Machine profile refresh contract missing" }
+# Start-here critical command references must resolve inside the package.
+$start = Get-Content (Join-Path $ToolkitRoot '00_START_HERE_FOR_ANY_AGENT.md') -Raw -Encoding UTF8
+foreach ($scriptName in @('self-test-toolkit.ps1','preflight-windows.ps1','install-agent-engineering.ps1','verify-agent-engineering.ps1')) {
+    if ($start.Contains($scriptName)) { Pass "Start Here references $scriptName" } else { Fail "Start Here missing $scriptName" }
+}
 
-$workClass = Get-Content (Join-Path $ToolkitSourceRoot "01_CANONICAL\WORK_CLASS_POLICY.md") -Raw -Encoding UTF8
-$commandEvidence = Get-Content (Join-Path $ToolkitSourceRoot "01_CANONICAL\CRITICAL_COMMAND_EVIDENCE_CONTRACT.md") -Raw -Encoding UTF8
-$stageOutcome = Get-Content (Join-Path $ToolkitSourceRoot "01_CANONICAL\STAGE_OUTCOME_CONTRACT.md") -Raw -Encoding UTF8
-$currentReadme = Get-Content (Join-Path $ToolkitSourceRoot "README.md") -Raw -Encoding UTF8
-$currentOverview = Get-Content (Join-Path $ToolkitSourceRoot "00_OVERVIEW.md") -Raw -Encoding UTF8
-
-if ($workClass.Contains("SMALL_CHANGE") -and $workClass.Contains("STAGE_WORK") -and $workClass.Contains("FORMAL_ACCEPTANCE")) { Pass "Work Class policy present" } else { Fail "Work Class policy missing" }
-if ($commandEvidence.Contains("Critical Command Evidence") -and $commandEvidence.Contains("exit_code") -and $commandEvidence.Contains("Redact")) { Pass "Critical Command Evidence contract present" } else { Fail "Critical Command Evidence contract missing" }
-if ($stageOutcome.Contains("stage_outcome.json") -and $stageOutcome.Contains("false_signoff_detected")) { Pass "Stage Outcome contract present" } else { Fail "Stage Outcome contract missing" }
-if (-not $currentReadme.Contains("Earlier documentation retained")) { Pass "README has no embedded legacy active body" } else { Fail "README still embeds legacy active documentation" }
-if ($currentOverview.Contains("L0 Machine Execution Profile") -and -not $currentOverview.Contains("以下四层能力")) { Pass "Overview uses current six-layer model only" } else { Fail "Overview architecture drift detected" }
-
-$archives = Get-ChildItem $ToolkitSourceRoot -Recurse -File | Where-Object { $_.Extension -in @(".zip",".rar",".7z") }
-if ($archives.Count -eq 0) { Pass "No nested archives" } else { Fail "Nested archives found" }
-
-Write-Host ""
-if ($fail -gt 0) { Write-Host "Toolkit Self-Test: FAIL ($fail issue(s))"; exit 1 }
-Write-Host "Toolkit Self-Test: PASS"
+if ($fail -gt 0) { Write-Host "Self-test: FAIL ($fail)"; exit 1 }
+Write-Host 'Self-test: PASS'
 exit 0

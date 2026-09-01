@@ -1,1 +1,1 @@
-{"stage_id":"<STAGE_ID>","command":"<COMMAND>","cwd":"<CWD>","started_at":"<ISO8601>","exit_code":0,"evidence_path":"<RELATIVE_EVIDENCE_PATH>","evidence_class":"TEST"}
+{"timestamp":"<ISO8601>","stage_id":"<id>","command":"<redacted command>","purpose":"<why critical>","result":"<exit/result>","evidence":"<relative path or note>"}

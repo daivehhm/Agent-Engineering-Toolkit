@@ -1,10 +1,11 @@
-# Package Manifest
+# Package Manifest — Agent Engineering Toolkit v1.6.1
 
-Package: `Agent-Engineering-Toolkit-v1.5`
-Version: `1.5.0`
-Files excluding this manifest: `90`
+Package: `Agent-Engineering-Toolkit-v1.6.1`
+Version: `1.6.1`
+Source baseline: `daivehhm/Agent-Engineering-Toolkit` / `main` / commit `5dd0d8de39f62fc2012754578615c8612583267a` (retrieved 2026-08-31)
+Files excluding this manifest: `91`
 
-No SHA/SHA256 manifest is used.
+No SHA/SHA256 manifest is required by AET.
 
 ## Files
 
@@ -91,6 +92,7 @@ No SHA/SHA256 manifest is used.
 - `06_VALIDATION/STATIC_VALIDATION_REPORT.md`
 - `06_VALIDATION/V1_3_CONTENT_COMPLETENESS_REVIEW.md`
 - `06_VALIDATION/V1_4_DEEP_SOCRATIC_REVIEW.md`
+- `06_VALIDATION/V1_6_1_SOCRATIC_REVIEW.md`
 - `06_VALIDATION/ZERO_CONTEXT_AGENT_CONFIGURATION_ASSESSMENT.md`
 - `CHANGELOG.md`
 - `FUTURE_CANDIDATES.md`

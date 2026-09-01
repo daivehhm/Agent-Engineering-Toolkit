@@ -1,44 +1,8 @@
-# Agent Engineering Toolkit v1.5
+# Agent Engineering Toolkit v1.6.1
 
-Agent Engineering Toolkit（AET）是一套面向 Codex / Claude Code / Antigravity 等本地 AI Coding Agent 的轻量工程执行、证据约束与独立 Review Toolkit。
+Agent Engineering Toolkit（AET）是一套面向 Codex / Claude Code / Antigravity 等本地 AI Coding Agent 的轻量工程执行、证据约束、安全约束与独立 Review Toolkit。
 
-*Agent Engineering Toolkit (AET) is a lightweight engineering execution, evidence-control, and independent-review toolkit for local AI coding Agents such as Codex, Claude Code, and Antigravity.*
-
-核心问题不是“Agent 会不会写代码”，而是：
-
-*The core question is not whether an Agent can write code, but whether:*
-
-```text
-执行是否真实 / execution is real
-改动是否受控 / changes are controlled
-证据是否可信 / evidence is trustworthy
-完成声明是否可验证 / completion claims are verifiable
-不同 Agent 是否遵守同一项目合同 / different Agents follow the same project contract
-```
-
-## 通俗理解 / Plain Explanation
-
-这东西是给那些“雇了 AI 程序员给自己打工”的人用的。比如，你是一个程序员，现在你让 Claude、Codex 这些 AI 来帮你写代码、改代码。这时候，你就是老板，AI 就是你的“码农实习生”。这个工具包，就是给老板（程序员）和 AI 实习生之间定的一套“工作纪律手册”。
-
-*This is for people who have effectively hired AI programmers to work for them. For example, if you are a developer asking Claude, Codex, or another coding Agent to write and modify code, you are the boss and the AI is your coding intern. This toolkit is the work-discipline manual between the developer and that AI intern.*
-
-AET 主要解决三个烦心事：AI 给你“造假账”，说测试通过但实际没跑；AI 给你“乱拆家”，修一个小 bug 却偷偷改了底层结构；AI “自己说了算”，改完只说搞定了，过程不可查。
-
-*AET mainly addresses three pain points: the AI fakes the books by claiming tests passed without running them; the AI changes the house by touching architecture or unrelated code while fixing a small bug; and the AI acts as its own judge by saying “done” without leaving a traceable process.*
-
-所以，AET 要求 AI 拿出“实锤证据”，例如 exit code、运行记录和测试结果；要求 AI 遵守“施工红线”，只改允许改的地方；还要求 AI 留下“流水账”，让关键操作、失败、重跑和结论都能被复核。
-
-*That is why AET requires hard evidence such as exit codes, run logs, and test results; clear work boundaries so the Agent touches only what is allowed; and an audit trail so key commands, failures, reruns, and conclusions can be reviewed.*
-
-总结成一句话：这个工具包，就是让你当 AI 的“严苛监工”。它确保你雇的 AI 程序员不撒谎、不乱改、不留坑，所有操作都有据可查。
-
-*In one sentence: this toolkit helps you act as a strict supervisor for AI coding Agents. It keeps them from lying, making uncontrolled changes, or leaving hidden problems behind, while making important work auditable.*
-
-## 六层架构 / Six-Layer Architecture
-
-AET 采用六层架构，把机器能力、全局纪律、Agent 适配、项目合同、阶段执行和独立 Review 分开，避免把所有规则混成一团。
-
-*AET uses a six-layer architecture that separates machine capability, global discipline, Agent adaptation, project contracts, stage execution, and independent review instead of mixing all rules into one place.*
+## 六层架构
 
 ```text
 L0  Machine Execution Profile
@@ -49,80 +13,70 @@ L4  Stage Execution Contract
 L5  Independent Review / Human Gate
 ```
 
-## 三个程序性 Skill / Three Procedural Skills
+AET 仍然只有三个程序性 Skill：`contract-impact-check`、`stage-execution`、`independent-review`。v1.6.1 没有引入 Policy Engine、Agent Manager、MCP Server、Registry 或新的治理层。
 
-AET 仍然只有三个程序性 Skill：`contract-impact-check`、`stage-execution` 和 `independent-review`。它们负责在语义变化、阶段执行和独立复核时提供最小但硬的流程约束。
+## FS_SEARCH_SAFETY_V1
 
-*AET still has only three procedural Skills: `contract-impact-check`, `stage-execution`, and `independent-review`. They provide minimal but strict process constraints for semantic changes, stage execution, and independent review.*
+该规则来自一次真实 Windows HDD 事件：Agent 为确认 `data_aishell3.tgz` 是否存在，从 `D:\` 和 `E:\` 执行无边界 `Get-ChildItem -Recurse`，机械盘活动时间升至约 87–100%，停止扫描后回落到接近空闲。
 
-```text
-contract-impact-check
-stage-execution
-independent-review
-```
-
-## v1.5 — Evidence & Consistency Closure
-
-v1.5 引入 Work Class，由工作性质决定最低 Evidence/Review 要求。Work Class 不是 `lenient / standard / strict`，而是 `SMALL_CHANGE`、`STAGE_WORK` 和 `FORMAL_ACCEPTANCE`。
-
-*v1.5 introduces Work Class, where the nature of the work determines the minimum evidence and review requirements. Work Class is not `lenient / standard / strict`; it is `SMALL_CHANGE`, `STAGE_WORK`, and `FORMAL_ACCEPTANCE`.*
+v1.6.1 将规则扩大到高成本的 **search / discovery / inventory / enumeration traversal**，而不只“找单个文件”：
 
 ```text
-SMALL_CHANGE
-STAGE_WORK
-FORMAL_ACCEPTANCE
+expected destination
+→ current project/workspace
+→ known download/cache/dataset/model locations
+→ existing healthy filesystem index
+→ narrowly scoped candidate directories
+→ whole-drive/root recursion only with explicit authorization
 ```
 
-Critical Command Evidence 要求正式 Stage 只记录关键测试、构建、真实运行、验证、迁移和 benchmark 命令的结构化证据；必须保存 exit code，要求 secret redaction，并且默认不捕获全部终端历史或完整环境变量。
+不得为了避免 scoped search 而主动触发 full index rebuild；默认不得并发多个 full-disk / large-tree scanner。规则覆盖 main Agent、subagent、delegated tool/shell/script 和替代执行路径。
 
-*Critical Command Evidence requires formal stages to record structured evidence only for key test, build, real-runtime, validation, migration, and benchmark commands. It must preserve exit code, requires secret redaction, and does not capture the full terminal history or full environment by default.*
+## v1.6.1 修复内容
 
-Minimal Stage Outcome 要求 `STAGE_WORK` / `FORMAL_ACCEPTANCE` 生成 `stage_outcome.json`，最小记录 Unit/Path/Runtime、Review 轮数、Blocker、false sign-off 与 Human Gate 状态。它是派生摘要，不能覆盖真实测试和运行证据。
+v1.6.0 的二次自检发现安装/验证链存在发布阻断项，因此 v1.6.1 重点做闭环修复：
 
-*Minimal Stage Outcome requires `STAGE_WORK` / `FORMAL_ACCEPTANCE` to produce `stage_outcome.json`, minimally recording Unit/Path/Runtime, review rounds, blockers, false sign-off, and Human Gate status. It is a derived summary and must not override real test or runtime evidence.*
+- 修复 `00_START_HERE_FOR_ANY_AGENT.md` 中破坏命令的隐藏控制字符。
+- Self-test 增加 C0 控制字符扫描、PowerShell native parser、JSON/JSONL 解析、Adapter version/reference 检查。
+- v1.5/v1.6 旧 Machine Profile 升级时保留用户 policy，仅幂等补齐缺失的 filesystem safety defaults。
+- Installer 在任何写入前完成全部 Skill / Antigravity CLI unmanaged conflict pre-scan。
+- 现有全局 Agent 配置和被替换的 Skill 在修改前备份；`-WhatIf` 不写入。
+- 非空 Codex `AGENTS.override.md` 若会压制 Global `AGENTS.md`，默认 fail closed；仅在显式 `-IntegrateCodexOverride` 时集成。
+- 安装 `adapters/` canonical templates，使 verifier 可以做 marker 内容的确定性 drift comparison。
+- Verifier 恢复 Skill tree / CLI flattened Skill 的精确内容比较，而非只检查 marker 是否存在。
+- `bootstrap-project.ps1 -IntegrateExisting` 改为 idempotent marker integration；已有 `ENGINEERING_CONTRACT.md` 永不追加空白 skeleton。
 
-Documentation Consistency 要求 active 文档只描述当前版本，历史变化进入 `CHANGELOG.md`，不再采用“旧版正文 + 新版 addendum”的写法。
+## 安装 / 升级
 
-*Documentation Consistency means active documents describe only the current version, while historical changes go into `CHANGELOG.md`. The project no longer uses an “old body plus new addendum” style.*
-
-## AET 不是什么 / What AET Is Not
-
-当前 AET 不建设 MCP Server、Receipt Server、Evaluation Platform、Dashboard、Agent Manager、Policy Engine、centralized lock 或 RBAC/Compliance 平台。AET 支持 auditability-oriented engineering，但不声称满足企业合规认证。
-
-*AET currently does not build an MCP Server, Receipt Server, Evaluation Platform, Dashboard, Agent Manager, Policy Engine, centralized lock, or RBAC/Compliance platform. AET supports auditability-oriented engineering, but it does not claim enterprise compliance certification.*
-
-## 目录结构 / Directory Layout
-
-仓库目录包括 `00_GUIDE`、`01_CANONICAL`、`02_SKILLS`、`03_ADAPTERS`、`04_SCRIPTS`、`05_EXAMPLES` 和 `06_VALIDATION`。其中 `01_CANONICAL` 是规范源，`02_SKILLS` 是三个程序性 Skill，`04_SCRIPTS` 是 Windows 安装、同步、预检和验证脚本。
-
-*The repository contains `00_GUIDE`, `01_CANONICAL`, `02_SKILLS`, `03_ADAPTERS`, `04_SCRIPTS`, `05_EXAMPLES`, and `06_VALIDATION`. `01_CANONICAL` contains canonical contracts, `02_SKILLS` contains the three procedural Skills, and `04_SCRIPTS` contains Windows install, sync, preflight, and verification scripts.*
-
-## 安装 / Installation
-
-安装建议先自检，再做 Windows 预检，然后执行 `-WhatIf` 预览，确认无误后正式安装，最后运行验证脚本。
-
-*The recommended installation flow is: run the self-test, run the Windows preflight, run the `-WhatIf` preview, perform the real install after checking the preview, and then run verification.*
+先执行 dry-run，不要直接覆盖：
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\04_SCRIPTS\self-test-toolkit.ps1
 powershell -ExecutionPolicy Bypass -File .\04_SCRIPTS\preflight-windows.ps1 -TestWriteAccess
 powershell -ExecutionPolicy Bypass -File .\04_SCRIPTS\install-agent-engineering.ps1 -WhatIf
-powershell -ExecutionPolicy Bypass -File .\04_SCRIPTS\install-agent-engineering.ps1
+```
+
+已有旧版本时：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\04_SCRIPTS\install-agent-engineering.ps1 -UpgradeCanonical -WhatIf
+```
+
+Review `WhatIf` 后再去掉 `-WhatIf`。若非空 Codex `AGENTS.override.md` 阻断加载，先人工 Review，再按需增加 `-IntegrateCodexOverride`。
+
+安装后：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File $HOME\.agent-engineering\scripts\refresh-machine-profile.ps1
 powershell -ExecutionPolicy Bypass -File $HOME\.agent-engineering\scripts\verify-agent-engineering.ps1
 ```
 
-最后执行 `00_GUIDE/09_AGENT_LOADING_SMOKE_TEST.md`。文件存在不等于 Runtime Loading 成功。
+静态验证通过仍只表示 `PASS_STATIC`。真正的 Agent loading、behavioral compliance 和 subagent inheritance 使用 `00_GUIDE/09_AGENT_LOADING_SMOKE_TEST.md` 在 fresh session 中验证。
 
-*Finally, run `00_GUIDE/09_AGENT_LOADING_SMOKE_TEST.md`. File existence does not prove Runtime Loading success.*
+## 边界
 
-## 成功标准 / Success Criteria
+AET 是 instruction/configuration-level 工程规则，不是 OS 级 shell interceptor。当前证据不足以证明需要建设中央 Policy Engine 或强制 command gateway。如果已正确加载规则后仍反复出现同类绕过，再根据真实事件决定是否升级 hard enforcement。
 
-配置成功的标志是 `SETUP_VERIFIED`。工程效果需要长期观察，包括 false PASS、Review 推翻率、返工轮数、Path failure、一次 Stage 完成率和 Human Gate 前机器错误。
+## License
 
-*Configuration success is marked by `SETUP_VERIFIED`. Engineering effectiveness should be observed over time through false PASS, review overturn rate, rework rounds, path failure, one-pass Stage completion rate, and machine errors before Human Gate.*
-
-## 许可证 / License
-
-本项目使用 MIT License。详见 `LICENSE`。
-
-*This project is released under the MIT License. See `LICENSE`.*
+MIT License.

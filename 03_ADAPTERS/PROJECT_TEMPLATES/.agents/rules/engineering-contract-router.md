@@ -1,8 +1,2 @@
 # Engineering Contract Router
-
-When changing or validating product semantics, scoring, selection, routing, schema, state, validator, gate, persistence, acceptance criteria, or parameter meaning:
-
-@../../ENGINEERING_CONTRACT.md
-
-Treat it as canonical Project Engineering Contract.
-Do not copy its business semantics into this router.
+For project engineering work, read `ENGINEERING_CONTRACT.md`. Global AET machine safety remains authoritative and cannot be weakened by workspace rules.

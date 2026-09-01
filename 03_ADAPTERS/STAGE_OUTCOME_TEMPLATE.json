@@ -1,17 +1,12 @@
 {
-  "schema_version": "1.0",
-  "stage_id": "<STAGE_ID>",
-  "work_class": "STAGE_WORK",
-  "builder_agent": "<AGENT_OR_UNKNOWN>",
-  "required_review_level": "R1",
-  "implementation_exit": "IMPLEMENTATION_COMPLETE_FOR_INDEPENDENT_REVIEW",
-  "unit_result": "UNKNOWN",
-  "path_result": "UNKNOWN",
-  "runtime_result": "UNKNOWN",
-  "independent_review_result": "PENDING",
-  "review_rounds": 0,
-  "blocker_count": 0,
-  "false_signoff_detected": false,
-  "human_gate_required": false,
-  "human_result": "NOT_REQUIRED"
+  "stage_id": "<id>",
+  "goal": "<verifiable outcome>",
+  "baseline": "<source baseline>",
+  "toolkit_version": "1.6.1",
+  "implementation_status": "<status>",
+  "validation": [],
+  "blocking": [],
+  "non_blocking": [],
+  "review_status": "PENDING_INDEPENDENT_REVIEW",
+  "next_step": "<one next step>"
 }

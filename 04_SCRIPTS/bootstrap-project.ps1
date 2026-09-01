@@ -1,192 +1,69 @@
 [CmdletBinding(SupportsShouldProcess=$true)]
 param(
-    [Parameter(Mandatory=$true)]
-    [string]$ProjectRoot,
-    [string]$InstallRoot = (Join-Path $HOME ".agent-engineering"),
-    [string]$TestCommand = "<TEST_COMMAND>",
-    [string]$ContractVersion = "0.1.0",
-    [switch]$IntegrateExisting,
-    [switch]$IncludeCodexCompatibility,
-    [switch]$Force
+    [Parameter(Mandatory=$true)][string]$ProjectRoot,
+    [string]$InstallRoot = (Join-Path $HOME '.agent-engineering'),
+    [switch]$IntegrateExisting
 )
 
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = 'Stop'
+$tpl = Join-Path $InstallRoot 'project-templates'
+if (-not (Test-Path $tpl)) { throw "Project templates missing: $tpl" }
 
-function Backup-File([string]$Path) {
-    if ($WhatIfPreference) {
-        Write-Host "WhatIf: would backup $Path"
-        return $null
-    }
-    $stamp = Get-Date -Format "yyyyMMdd-HHmmss"
-    $backup = "$Path.agent-engineering-backup-$stamp"
-    Copy-Item $Path $backup -Force
-    return $backup
-}
-function Add-MarkerBlock {
-    param([string]$Path, [string]$Block)
-    if ($WhatIfPreference) {
-        Write-Host "WhatIf: would integrate Toolkit project block into $Path"
-        return
-    }
-    $begin = "<!-- AGENT-ENGINEERING-PROJECT:BEGIN -->"
-    $end = "<!-- AGENT-ENGINEERING-PROJECT:END -->"
-    $existing = if (Test-Path $Path) { Get-Content $Path -Raw -Encoding UTF8 } else { "" }
-    $pattern = [regex]::Escape($begin) + "(?s).*?" + [regex]::Escape($end)
-    if ([regex]::IsMatch($existing, $pattern)) {
-        $new = [regex]::Replace($existing, $pattern, [System.Text.RegularExpressions.MatchEvaluator]{ param($m) $Block })
+function Set-ProjectRouterBlock([string]$Path, [string]$Content) {
+    $begin = '<!-- AET-PROJECT-ROUTER:BEGIN -->'
+    $end = '<!-- AET-PROJECT-ROUTER:END -->'
+    $block = $begin + "`r`n" + $Content.Trim() + "`r`n" + $end
+    $existing = if (Test-Path $Path) { Get-Content $Path -Raw -Encoding UTF8 } else { '' }
+    $pattern = [regex]::Escape($begin) + '(?s).*?' + [regex]::Escape($end)
+    if ([regex]::IsMatch($existing,$pattern)) {
+        $replacement = $block
+        $new = [regex]::Replace($existing,$pattern,[System.Text.RegularExpressions.MatchEvaluator]{ param($m) $replacement })
+    } elseif ($existing.Trim() -eq $Content.Trim()) {
+        # Existing file is an earlier AET-created raw router; normalize it once into a managed block.
+        $new = $block + "`r`n"
+    } elseif ([string]::IsNullOrWhiteSpace($existing)) {
+        $new = $block + "`r`n"
     } else {
-        $prefix = if ([string]::IsNullOrWhiteSpace($existing)) { "" } else { $existing.TrimEnd() + "`r`n`r`n" }
-        $new = $prefix + $Block + "`r`n"
+        $new = $existing.TrimEnd() + "`r`n`r`n" + $block + "`r`n"
     }
-    Set-Content $Path $new -Encoding UTF8
+    if ($existing -eq $new) { return }
+    if ($PSCmdlet.ShouldProcess($Path,'Integrate/update idempotent AET project router block')) {
+        $parent = Split-Path -Parent $Path
+        if ($parent) { New-Item -ItemType Directory -Force -Path $parent | Out-Null }
+        Set-Content -Path $Path -Value $new -Encoding UTF8
+    }
 }
 
-$templates = Join-Path $InstallRoot "project-templates"
-if (-not (Test-Path $templates)) { throw "Project templates not found: $templates" }
-
-if (-not $WhatIfPreference) {
-    New-Item -ItemType Directory -Force -Path $ProjectRoot | Out-Null
+if (-not (Test-Path $ProjectRoot)) {
+    if ($PSCmdlet.ShouldProcess($ProjectRoot,'Create project root')) {
+        New-Item -ItemType Directory -Force -Path $ProjectRoot | Out-Null
+    }
 }
-$projectName = Split-Path -Leaf ($ProjectRoot.TrimEnd("\","/"))
 
-$items = @(
-    "AGENTS.md",
-    "CLAUDE.md",
-    "GEMINI.md",
-    "ENGINEERING_CONTRACT.md",
-    ".agents\rules\engineering-contract-router.md"
-)
-$adapterFiles = @("AGENTS.md","CLAUDE.md","GEMINI.md")
-$existedAtStart = @{}
-foreach ($rel in $items) { $existedAtStart[$rel] = Test-Path (Join-Path $ProjectRoot $rel) }
-
-foreach ($rel in $items) {
-    $src = Join-Path $templates $rel
+$routerFiles = @('AGENTS.md','CLAUDE.md','GEMINI.md','.agents\rules\engineering-contract-router.md')
+foreach ($rel in $routerFiles) {
+    $src = Join-Path $tpl $rel
     $dst = Join-Path $ProjectRoot $rel
-    if (-not (Test-Path $src)) { throw "Template missing: $src" }
-
-    # Existing agent adapters are merged later when -IntegrateExisting is used.
-    # Do not overwrite them first, even when -Force is also present.
-    if ($IntegrateExisting -and $existedAtStart[$rel] -and ($adapterFiles -contains $rel)) {
-        Write-Host "Preserve existing for marker integration: $dst"
-        continue
-    }
-
-    if ((Test-Path $dst) -and -not $Force) {
-        Write-Host "SKIP existing: $dst"
-        continue
-    }
-
-    if ($PSCmdlet.ShouldProcess($dst, "Create project config")) {
-        if (-not $WhatIfPreference) {
-            if ((Test-Path $dst) -and $Force) {
-                $backup = Backup-File $dst
-                if ($backup) { Write-Host "Backup before overwrite: $backup" }
-            }
-            New-Item -ItemType Directory -Force -Path (Split-Path -Parent $dst) | Out-Null
-            $text = Get-Content $src -Raw -Encoding UTF8
-            $text = $text.Replace("<PROJECT_NAME>", $projectName)
-            $text = $text.Replace("<CURRENT_ROOT>", $ProjectRoot)
-            $text = $text.Replace("<TEST_COMMAND>", $TestCommand)
-            $text = $text.Replace("<CONTRACT_VERSION>", $ContractVersion)
-            Set-Content $dst $text -Encoding UTF8
-            Write-Host "Created: $dst"
-        }
-    }
-}
-
-if ($IntegrateExisting) {
-    $agentBlock = @'
-<!-- AGENT-ENGINEERING-PROJECT:BEGIN -->
-## Agent Engineering Project Router
-
-Canonical project semantics live in `ENGINEERING_CONTRACT.md`.
-
-For product/business semantic changes:
-- read canonical contract;
-- use `contract-impact-check`.
-
-Before terminal/filesystem/network/GPU/long-runtime execution:
-- read `%USERPROFILE%\.agent-engineering\MACHINE_EXECUTION_PROFILE.md` if installed;
-- perform Stage capability preflight.
-
-Workspace default:
-- one active Builder writer per worktree;
-- Reviewer read-only by default.
-
-Use `stage-execution` for complete engineering stages.
-Use `independent-review` for formal independent review.
-
-Do not duplicate business thresholds/state semantics in this adapter.
-<!-- AGENT-ENGINEERING-PROJECT:END -->
-'@
-    $claudeBlock = @'
-<!-- AGENT-ENGINEERING-PROJECT:BEGIN -->
-@AGENTS.md
-Use /contract-impact-check for semantic changes.
-Use /stage-execution for stage work.
-Use /independent-review only for independent review.
-<!-- AGENT-ENGINEERING-PROJECT:END -->
-'@
-    $geminiBlock = @'
-<!-- AGENT-ENGINEERING-PROJECT:BEGIN -->
-@AGENTS.md
-Use contract-impact-check for semantic changes.
-Use stage-execution for stage work.
-Use independent-review only for independent review.
-<!-- AGENT-ENGINEERING-PROJECT:END -->
-'@
-
-    $integrationTargets = @(
-        @("AGENTS.md", (Join-Path $ProjectRoot "AGENTS.md"), $agentBlock),
-        @("CLAUDE.md", (Join-Path $ProjectRoot "CLAUDE.md"), $claudeBlock),
-        @("GEMINI.md", (Join-Path $ProjectRoot "GEMINI.md"), $geminiBlock)
-    )
-
-    foreach ($entry in $integrationTargets) {
-        $rel = $entry[0]; $path = $entry[1]; $block = $entry[2]
-        if (-not $existedAtStart[$rel]) {
-            Write-Host "No merge needed; Toolkit template was new/nonexistent at start: $path"
-            continue
-        }
-        if ($PSCmdlet.ShouldProcess($path, "Integrate Agent Engineering project block")) {
-            if (-not $WhatIfPreference) {
-                $backup = Backup-File $path
-                if ($backup) { Write-Host "Backup before integration: $backup" }
-                Add-MarkerBlock $path $block
-            }
-        }
-    }
-}
-
-if ($IncludeCodexCompatibility) {
-    $src = Join-Path $InstallRoot "project-templates\CODEX_COMPATIBILITY_TEMPLATE.md"
-    $dst = Join-Path $ProjectRoot "CODEX.md"
-    if (-not (Test-Path $src)) { throw "CODEX compatibility template missing: $src" }
-
-    if ((Test-Path $dst) -and -not $Force) {
-        Write-Host "SKIP existing: $dst"
-    } elseif ($PSCmdlet.ShouldProcess($dst, "Create optional CODEX.md compatibility file")) {
-        if (-not $WhatIfPreference) {
-            if ((Test-Path $dst) -and $Force) {
-                $backup = Backup-File $dst
-                if ($backup) { Write-Host "Backup before overwrite: $backup" }
-            }
+    if (-not (Test-Path $src)) { throw "Project router template missing: $src" }
+    if (Test-Path $dst) {
+        if (-not $IntegrateExisting) { Write-Warning "Preserved existing: $dst"; continue }
+        Set-ProjectRouterBlock $dst (Get-Content $src -Raw -Encoding UTF8)
+    } else {
+        if ($PSCmdlet.ShouldProcess($dst,'Create project router template')) {
+            $parent = Split-Path -Parent $dst
+            if ($parent) { New-Item -ItemType Directory -Force -Path $parent | Out-Null }
             Copy-Item $src $dst -Force
         }
     }
 }
 
-Write-Host ""
-if ($WhatIfPreference) {
-    Write-Host "Project bootstrap dry-run complete; no project files/backups should have been modified."
+# ENGINEERING_CONTRACT.md is the project semantic source of truth. Never append a blank skeleton to an existing contract.
+$contractSrc = Join-Path $tpl 'ENGINEERING_CONTRACT.md'
+$contractDst = Join-Path $ProjectRoot 'ENGINEERING_CONTRACT.md'
+if (Test-Path $contractDst) {
+    Write-Warning "Preserved existing canonical project contract without modification: $contractDst"
 } else {
-    Write-Host "Project bootstrap complete."
+    if ($PSCmdlet.ShouldProcess($contractDst,'Create project Engineering Contract skeleton')) {
+        Copy-Item $contractSrc $contractDst -Force
+    }
 }
-if ($TestCommand -eq "<TEST_COMMAND>") {
-    Write-Warning "Test command remains a placeholder. Do not treat project configuration as complete until AGENTS.md contains the real command."
-} else {
-    Write-Host "Configured project test command: $TestCommand"
-}
-Write-Host "Edit ENGINEERING_CONTRACT.md for actual long-lived product contracts."
-Write-Host "Antigravity IDE workspace rule activation must be verified in Customizations; recommended: Model Decision."

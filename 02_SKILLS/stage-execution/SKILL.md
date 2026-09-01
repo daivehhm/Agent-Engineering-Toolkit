@@ -1,10 +1,4 @@
----
-name: stage-execution
-description: Use for STAGE_WORK or FORMAL_ACCEPTANCE requiring contract awareness, capability preflight, single-writer safety, critical-command evidence, Unit/Path/Runtime proof, Stage Outcome, and independent-review handoff.
----
-# Stage Execution
-Read references: STAGE_EXECUTION_TEMPLATE, CROSS_AGENT_EXECUTION_CONTRACT, STAGE_BINDING_AND_PARAMETER_POLICY, WORK_CLASS_POLICY, CRITICAL_COMMAND_EVIDENCE_CONTRACT, STAGE_OUTCOME_CONTRACT.
+# Skill: stage-execution
+Use for STAGE_WORK / FORMAL_ACCEPTANCE.
 
-Declare Work Class; bind Stage; preflight capability/writer; run Contract Impact when needed; preserve evidence; record critical commands only; prove Unit→Path→Runtime; create Claim-Evidence Matrix and Stage Outcome; hand off to Independent Review; never self-approve formal PASS.
-
-Exit only `IMPLEMENTATION_COMPLETE_FOR_INDEPENDENT_REVIEW` or `EXECUTION_BLOCKED`.
+Read the reference contracts in `references/` before execution. Build around one verifiable Stage Goal, perform capability/writer preflight, honor Global Safety including FS_SEARCH_SAFETY_V1, validate Unit/Path/Runtime as applicable, and stop on blocking evidence.

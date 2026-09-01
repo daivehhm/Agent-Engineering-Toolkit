@@ -1,104 +1,21 @@
 # Changelog
 
-## 1.5.0 — Evidence & Consistency Closure
+## 1.6.1 — 2026-09-01
+- Fixed hidden C0 control characters in Start Here commands.
+- Added package text-control scanning, native PowerShell parser checks, and JSON/JSONL parsing to self-test.
+- Added idempotent Machine Profile safety-default migration for upgrades while preserving user policy.
+- Restored fail-before-write conflict pre-scan across Codex / Claude / Antigravity IDE / Antigravity CLI Skills.
+- Added backups before global adapter and Skill replacement; preserved non-mutating WhatIf behavior.
+- Added fail-closed handling for active non-empty Codex `AGENTS.override.md` unless explicit integration is authorized.
+- Installed canonical adapter templates and restored exact adapter/Skill drift verification.
+- Made project router integration idempotent and prevented appending a blank Engineering Contract to an existing canonical contract.
+- Expanded `FS_SEARCH_SAFETY_V1` from single-file location to expensive search/discovery/inventory/enumeration traversal; prefer an existing healthy index and do not trigger full rebuild just to avoid scoped search.
+- No new governance layer, Skill, Registry, Policy Engine, MCP Server, or Agent Manager.
 
-### Active documentation consistency
-- README is current-only; embedded legacy active documentation removed.
-- Overview uses the six-layer model only.
-- Active configuration/operations/loading guides rewritten as current canonical documentation.
-- History remains in CHANGELOG/Migration docs instead of append-only active bodies.
+## 1.6.0 — 2026-08-31
+- Added Global Invariant `FS_SEARCH_SAFETY_V1` from a real HDD saturation incident.
+- Added lowest-I/O search order, concurrent scanner restriction, and main/subagent/delegated execution inheritance.
+- Added fresh-session loading + behavioral smoke and explicit runtime coverage states.
 
-### Work Class
-Added `SMALL_CHANGE`, `STAGE_WORK`, `FORMAL_ACCEPTANCE`. No lenient/standard/strict modes.
-
-### Critical Command Evidence
-Added canonical contract and JSONL template for key command evidence, preserving exit codes and requiring secret redaction. No shell interceptor, daemon, or Receipt DB.
-
-### Minimal Stage Outcome
-Added canonical `stage_outcome.json` contract/template to accumulate review rounds, blockers, false sign-off, Unit/Path/Runtime, and Human Gate outcomes. No Evaluation Platform/dashboard.
-
-### Review Package
-Formal Stage packages now standardize binding, Claim-Evidence Matrix, Critical Command Evidence, Stage Outcome, bounded tests/runtime/diff evidence, Git state, and Human sheet when required.
-
-### Deferred candidates
-Added evidence-triggered future candidates for automated command capture, evaluation aggregation, MCP/CI adapters, and enterprise policy integration.
-
-### Architecture boundary
-Still exactly three procedural Skills: contract-impact-check, stage-execution, independent-review. No MCP Server, DB, Dashboard, Receipt Server, Agent Manager, Policy Engine, or centralized lock.
-
-## 1.4.0
-
-- Added Machine Execution Profile and refresh script.
-- Added six-layer scope model.
-- Added capability preflight.
-- Added Single Writer per Worktree.
-- Added R0/R1/R2/R3 review independence.
-- Added Project semantic single-source rule.
-- Added Stage/Prompt/Contract/Toolkit/source/run binding.
-- Added external-research promotion boundary.
-- Added parameter identity classes.
-- Bootstrap supports ContractVersion.
-- Verify checks Machine Profile/adapters.
-- No new procedural Skill or governance platform.
-
-## 1.3.0
-
-### Product-level documentation completion
-
-Added:
-
-- `00_OVERVIEW.md`
-- `13_USAGE_SCENARIOS_AND_DECISION_TREE.md`
-- `14_ROLES_LIFECYCLE_AND_SUCCESS_CRITERIA.md`
-
-The package now explicitly and centrally explains:
-
-- what the Toolkit is;
-- why it exists;
-- its goals;
-- problems it solves;
-- what it is not;
-- when to use it;
-- when not to use it;
-- Builder / Reviewer / Human roles;
-- complete lifecycle;
-- Stage definition;
-- configuration success criteria;
-- engineering success criteria;
-- Toolkit long-term value criteria.
-
-No new governance platform or new procedural Skill was introduced.
-
-## 1.2.0
-
-### Critical correctness fixes
-
-- Added an agent-neutral setup entrypoint.
-- Corrected Antigravity CLI global Skill layout to flat Markdown files.
-- Added native Windows preflight and WSL fail-closed behavior.
-- Added target write-access probes.
-- Skill sync now pre-scans all unmanaged conflicts before writes.
-- Fixed `-WhatIf` backup/directory side effects.
-- Fixed destructive interaction between `-Force` and `-IntegrateExisting`.
-- Verify now validates Antigravity IDE and CLI using their distinct real layouts.
-- Added explicit setup outcome states and per-agent runtime loading requirements.
-
-### Documentation
-
-- Added Any-Agent Windows Installation Playbook.
-- Added capability/permission prerequisites.
-- Updated deployment matrix and official-source notes.
-- Added setup prompt usable with any local Agent.
-
-## 1.1.0
-
-- Split Hard Invariants from Workflow Defaults.
-- Added Test Integrity Contract and Claim-Evidence Matrix.
-- Added CODEX_HOME / CLAUDE_CONFIG_DIR awareness.
-- Added Codex AGENTS.override detection.
-- Added safer same-name Skill migration/conflict behavior.
-- Added package/static vs runtime loading distinction.
-
-## 1.0.0
-
-Initial cross-Agent Toolkit.
+## 1.5.0
+- Cross-agent execution contracts, work classes, capability preflight, static adapter verification and three procedural Skills.

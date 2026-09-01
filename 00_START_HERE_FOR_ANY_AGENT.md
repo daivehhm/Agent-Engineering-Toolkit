@@ -1,4 +1,4 @@
-# Start Here for Any Agent — v1.5
+# Start Here for Any Agent — v1.6.1
 
 Do not rely on prior conversation context. Treat this package as self-contained.
 
@@ -15,36 +15,24 @@ Package Self-Test
 → WhatIf
 → Install/Upgrade
 → Machine Profile Refresh
-→ Disk Verify
-→ Actual Agent Loading Smoke
+→ Static Verify
+→ Actual Agent Loading + Behavioral Smoke
 ```
 
 ## Commands
-From extracted package root:
+From the extracted package root:
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\04_SCRIPTS\self-test-toolkit.ps1
 powershell -ExecutionPolicy Bypass -File .\04_SCRIPTS\preflight-windows.ps1 -TestWriteAccess
 powershell -ExecutionPolicy Bypass -File .\04_SCRIPTS\install-agent-engineering.ps1 -WhatIf
 powershell -ExecutionPolicy Bypass -File .\04_SCRIPTS\install-agent-engineering.ps1
+powershell -ExecutionPolicy Bypass -File $HOME\.agent-engineering\scripts\refresh-machine-profile.ps1
 powershell -ExecutionPolicy Bypass -File $HOME\.agent-engineering\scripts\verify-agent-engineering.ps1
 ```
-If upgrading an older version, use `-UpgradeCanonical` after reviewing WhatIf output.
+If upgrading an older installation, add `-UpgradeCanonical` to both installer commands after reviewing the dry-run. If a non-empty Codex `AGENTS.override.md` suppresses the global `AGENTS.md`, inspect it and add `-IntegrateCodexOverride` only when integration is intended.
 
-## Machine Profile
-Installed path:
-`%USERPROFILE%\.agent-engineering\MACHINE_EXECUTION_PROFILE.md`.
-Refresh after tool/runtime changes:
-```powershell
-$HOME\.agent-engineering\scripts\refresh-machine-profile.ps1
-```
-Machine discovery is machine fact only. It does not prove the current Agent session can execute a tool.
-
-## Project Work
-Before formal work, classify it as SMALL_CHANGE / STAGE_WORK / FORMAL_ACCEPTANCE. Use `WORK_CLASS_POLICY.md`.
-
-For semantic changes use `contract-impact-check`.
-For STAGE_WORK / FORMAL_ACCEPTANCE use `stage-execution`.
-For formal review use `independent-review`.
+## Safety of the Setup Process
+`-WhatIf` must not create backups, directories, files, or partial Skill installations. Installer conflict discovery happens before writes. Existing global Agent files are backed up before marker changes. Existing Machine Profile user policy is preserved and only missing current safety defaults are merged.
 
 ## Success State
-File existence is insufficient. `SETUP_VERIFIED` requires actual loading verification for every locally installed target. Otherwise report `SETUP_PARTIALLY_VERIFIED` or `SETUP_BLOCKED`.
+File existence is insufficient. Static verification must pass first. `SETUP_VERIFIED` additionally requires actual loading and behavioral verification for every locally installed/used target using `00_GUIDE/09_AGENT_LOADING_SMOKE_TEST.md`.
