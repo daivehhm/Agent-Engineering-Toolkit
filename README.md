@@ -20,7 +20,6 @@ Agent Engineering Toolkit（AET）是一套面向 Codex / Claude Code / Antigrav
 
 
 ## 通俗理解
-
 ## Plain Explanation
 
 这东西是给那些“雇了 AI 程序员给自己打工”的人用的。比如，你是一个程序员，现在你让 Claude、Codex 这些 AI 来帮你写代码、改代码。这时候，你就是老板，AI 就是你的“码农实习生”。这个工具包，就是给老板（程序员）和 AI 实习生之间定的一套“工作纪律手册”。
@@ -44,7 +43,6 @@ AET 主要解决三个烦心事：AI 给你“造假账”，说测试通过但�
 
 
 ## 六层架构
-
 ## Six-Layer Architecture
 
 AET 采用六层架构，把机器能力、全局纪律、Agent 适配、项目合同、阶段执行和独立 Review 分开，避免把所有规则混成一团。
@@ -63,7 +61,6 @@ L5  Independent Review / Human Gate
 
 
 ## 三个程序性 Skill
-
 ## Three Procedural Skills
 
 AET 仍然只有三个程序性 Skill：`contract-impact-check`、`stage-execution` 和 `independent-review`。它们负责在语义变化、阶段执行和独立复核时提供最小但硬的流程约束。
@@ -115,7 +112,6 @@ Documentation Consistency 要求 active 文档只描述当前版本，历史变�
 
 
 ## AET 不是什么
-
 ## What AET Is Not
 
 当前 AET 不建设 MCP Server、Receipt Server、Evaluation Platform、Dashboard、Agent Manager、Policy Engine、centralized lock 或 RBAC/Compliance 平台。AET 支持 auditability-oriented engineering，但不声称满足企业合规认证。
@@ -124,7 +120,6 @@ Documentation Consistency 要求 active 文档只描述当前版本，历史变�
 
 
 ## 目录结构
-
 ## Directory Layout
 
 仓库目录包括 `00_GUIDE`、`01_CANONICAL`、`02_SKILLS`、`03_ADAPTERS`、`04_SCRIPTS`、`05_EXAMPLES` 和 `06_VALIDATION`。其中 `01_CANONICAL` 是规范源，`02_SKILLS` 是三个程序性 Skill，`04_SCRIPTS` 是 Windows 安装、同步、预检和验证脚本。
@@ -133,7 +128,6 @@ Documentation Consistency 要求 active 文档只描述当前版本，历史变�
 
 
 ## 安装
-
 ## Installation
 
 安装建议先自检，再做 Windows 预检，然后执行 `-WhatIf` 预览，确认无误后正式安装，最后运行验证脚本。
@@ -161,7 +155,6 @@ powershell -ExecutionPolicy Bypass -File $HOME\.agent-engineering\scripts\verify
 
 
 ## 成功标准
-
 ## Success Criteria
 
 配置文件和 Skill 通过静态验证后，仍需 fresh-session Runtime Loading 验证。完整通过状态以 verifier 输出 `CONFIGURED_AND_RUNTIME_VERIFIED` 为准；只有静态配置完成时应保持 `CONFIGURED_NOT_RUNTIME_VERIFIED`。
@@ -175,7 +168,6 @@ powershell -ExecutionPolicy Bypass -File $HOME\.agent-engineering\scripts\verify
 
 
 ## 许可证
-
 ## License
 
 本项目使用 MIT License。详见 `LICENSE`。
